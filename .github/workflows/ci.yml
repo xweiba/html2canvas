@@ -36,7 +36,7 @@ jobs:
       - name: Pack
         run: |
           npm pack
-          mv html2canvas-*.tgz html2canvas.tgz
+          mv wtto00-html2canvas-*.tgz html2canvas.tgz
           tar --list --verbose --file=html2canvas.tgz
       - name: Upload npm pack
         uses: actions/upload-artifact@v2
