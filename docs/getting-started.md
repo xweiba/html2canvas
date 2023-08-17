@@ -1,9 +1,9 @@
 ---
 title: "Getting Started"
 description: "Learn how to start using html2canvas"
-previousUrl: "/documentation"
+previousUrl: "./documentation"
 previousTitle: "About"
-nextUrl: "/configuration"
+nextUrl: "./configuration"
 nextTitle: "Configuration"
 ---
 
@@ -13,7 +13,7 @@ You can install `html2canvas` through npm or [download a built release](https://
 
 ### npm
 
-    npm install html2canvas
+    npm install @wtto00/html2canvas
 
 ```javascript
 import html2canvas from 'html2canvas';

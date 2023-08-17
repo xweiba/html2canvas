@@ -70,6 +70,7 @@ Below is a list of all the supported CSS properties and values.
  - word-spacing
  - word-wrap
  - z-index
+ - object-fit
 
 ## Unsupported CSS properties
 These CSS properties are **NOT** currently supported
@@ -80,7 +81,7 @@ These CSS properties are **NOT** currently supported
  - [filter](https://github.com/niklasvh/html2canvas/issues/493)
  - [font-variant-ligatures](https://github.com/niklasvh/html2canvas/pull/1085)
  - [mix-blend-mode](https://github.com/niklasvh/html2canvas/issues/580)
- - [object-fit](https://github.com/niklasvh/html2canvas/issues/1064)
+ - object-position
  - [repeating-linear-gradient()](https://github.com/niklasvh/html2canvas/issues/1162)
  - [writing-mode](https://github.com/niklasvh/html2canvas/issues/1258)
  - [zoom](https://github.com/niklasvh/html2canvas/issues/732)
