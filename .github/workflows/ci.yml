@@ -224,7 +224,7 @@ jobs:
                   node-version: 16
                   registry-url: 'https://registry.npmjs.org'
             - name: NPM Publish
-              run: cd npm/package && npm publish
+              run: cd npm/package && npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: GitHub Package Publish
