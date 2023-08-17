@@ -31,12 +31,12 @@ const navStyle = {
 };
 
 const links = [
-    {href: '/documentation', text: 'About'},
-    {href: '/getting-started', text: 'Getting started'},
-    {href: '/configuration', text: 'Configuration'},
-    {href: '/features', text: 'Features'},
-    {href: '/proxy', text: 'Proxy'},
-    {href: '/faq', text: 'FAQ'}
+    {href: './documentation', text: 'About'},
+    {href: './getting-started', text: 'Getting started'},
+    {href: './configuration', text: 'Configuration'},
+    {href: './features', text: 'Features'},
+    {href: './proxy', text: 'Proxy'},
+    {href: './faq', text: 'FAQ'}
 ];
 
 export default class Navigation extends Component {
