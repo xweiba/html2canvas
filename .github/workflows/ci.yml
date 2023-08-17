@@ -288,6 +288,8 @@ jobs:
     name: Publish Docs
     if: ${{ github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v') }}
     needs: docs
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
         with:
