@@ -44,6 +44,7 @@ import {PAINT_ORDER_LAYER} from '../../css/property-descriptors/paint-order';
 import {Renderer} from '../renderer';
 import {Context} from '../../core/context';
 import {DIRECTION} from '../../css/property-descriptors/direction';
+import {OBJECT_FIT} from '../../css/property-descriptors/object-fit';
 
 export type RenderConfigurations = RenderOptions & {
     backgroundColor: Color | null;
@@ -276,17 +277,77 @@ export class CanvasRenderer extends Renderer {
             this.path(path);
             this.ctx.save();
             this.ctx.clip();
-            this.ctx.drawImage(
-                image,
-                0,
-                0,
-                container.intrinsicWidth,
-                container.intrinsicHeight,
-                box.left,
-                box.top,
-                box.width,
-                box.height
-            );
+            let sx = 0,
+                sy = 0,
+                sw: number = container.intrinsicWidth,
+                sh: number = container.intrinsicHeight,
+                dx: number = box.left,
+                dy: number = box.top,
+                dw: number = box.width,
+                dh: number = box.height;
+            const {objectFit} = container.styles;
+            const boxRatio = dw / dh;
+            const imgRatio = sw / sh;
+            if (objectFit === OBJECT_FIT.CONTAIN) {
+                if (imgRatio > boxRatio) {
+                    dh = dw / imgRatio;
+                    dy += (box.height - dh) / 2;
+                } else {
+                    dw = dh * imgRatio;
+                    dx += (box.width - dw) / 2;
+                }
+            } else if (objectFit === OBJECT_FIT.COVER) {
+                if (imgRatio > boxRatio) {
+                    sw = sh * boxRatio;
+                    sx += (container.intrinsicWidth - sw) / 2;
+                } else {
+                    sh = sw / boxRatio;
+                    sy += (container.intrinsicHeight - sh) / 2;
+                }
+            } else if (objectFit === OBJECT_FIT.NONE) {
+                if (sw > dw) {
+                    sx += (sw - dw) / 2;
+                    sw = dw;
+                } else {
+                    dx += (dw - sw) / 2;
+                    dw = sw;
+                }
+                if (sh > dh) {
+                    sy += (sh - dh) / 2;
+                    sh = dh;
+                } else {
+                    dy += (dh - sh) / 2;
+                    dh = sh;
+                }
+            } else if (objectFit === OBJECT_FIT.SCALE_DOWN) {
+                const containW = imgRatio > boxRatio ? dw : dh * imgRatio;
+                const noneW = sw > dw ? sw : dw;
+                if (containW < noneW) {
+                    if (imgRatio > boxRatio) {
+                        dh = dw / imgRatio;
+                        dy += (box.height - dh) / 2;
+                    } else {
+                        dw = dh * imgRatio;
+                        dx += (box.width - dw) / 2;
+                    }
+                } else {
+                    if (sw > dw) {
+                        sx += (sw - dw) / 2;
+                        sw = dw;
+                    } else {
+                        dx += (dw - sw) / 2;
+                        dw = sw;
+                    }
+                    if (sh > dh) {
+                        sy += (sh - dh) / 2;
+                        sh = dh;
+                    } else {
+                        dy += (dh - sh) / 2;
+                        dh = sh;
+                    }
+                }
+            }
+            this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
             this.ctx.restore();
         }
     }

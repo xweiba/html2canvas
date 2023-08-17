@@ -1,26 +1,26 @@
 {
   "title": "html2canvas",
-  "name": "html2canvas",
+  "name": "@wtto00/html2canvas",
   "description": "Screenshots with JavaScript",
   "main": "dist/html2canvas.js",
   "module": "dist/html2canvas.esm.js",
   "typings": "dist/types/index.d.ts",
   "browser": "dist/html2canvas.js",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": {
-    "name": "Niklas von Hertzen",
-    "email": "niklasvh@gmail.com",
-    "url": "https://hertzen.com"
+    "name": "wtto00",
+    "email": "wtto00@outlook.com",
+    "url": "https://github.com/wtto00"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:niklasvh/html2canvas.git"
+    "url": "git@github.com:wtto00/html2canvas.git"
   },
   "bugs": {
-    "url": "https://github.com/niklasvh/html2canvas/issues"
+    "url": "https://github.com/wtto00/html2canvas/issues"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",

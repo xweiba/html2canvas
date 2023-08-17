@@ -80,6 +80,7 @@ import {paintOrder} from './property-descriptors/paint-order';
 import {webkitTextStrokeColor} from './property-descriptors/webkit-text-stroke-color';
 import {webkitTextStrokeWidth} from './property-descriptors/webkit-text-stroke-width';
 import {Context} from '../core/context';
+import {objectFit} from './property-descriptors/object-fit';
 
 export class CSSParsedDeclaration {
     animationDuration: ReturnType<typeof duration.parse>;
@@ -148,6 +149,7 @@ export class CSSParsedDeclaration {
     webkitTextStrokeWidth: ReturnType<typeof webkitTextStrokeWidth.parse>;
     wordBreak: ReturnType<typeof wordBreak.parse>;
     zIndex: ReturnType<typeof zIndex.parse>;
+    objectFit: ReturnType<typeof objectFit.parse>;
 
     constructor(context: Context, declaration: CSSStyleDeclaration) {
         this.animationDuration = parse(context, duration, declaration.animationDuration);
@@ -225,6 +227,7 @@ export class CSSParsedDeclaration {
         this.webkitTextStrokeWidth = parse(context, webkitTextStrokeWidth, declaration.webkitTextStrokeWidth);
         this.wordBreak = parse(context, wordBreak, declaration.wordBreak);
         this.zIndex = parse(context, zIndex, declaration.zIndex);
+        this.objectFit = parse(context, objectFit, declaration.objectFit);
     }
 
     isVisible(): boolean {
