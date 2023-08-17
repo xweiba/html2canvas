@@ -1,6 +1,6 @@
 # html2canvas
 
-This project is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/html2canvas). It fixs some bugs, and add some features.
+This project is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/html2canvas). It fixs some bugs, and adds some features.
 
 -   🌟 Support `object-fit` of `<img/>`
 
@@ -11,12 +11,12 @@ If this helps you a lot, please buy me a coffee.
 
 ---
 
-[Homepage](https://html2canvas.hertzen.com) | [Downloads](https://github.com/niklasvh/html2canvas/releases) | [Questions](https://github.com/niklasvh/html2canvas/discussions/categories/q-a)
+[Homepage](https://wtto00.github.io/html2canvas) | [Downloads](https://github.com/wtto00/html2canvas/releases) | [Questions](https://github.com/wtto00/html2canvas/discussions/categories/q-a)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/niklasvh/html2canvas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-![CI](https://github.com/niklasvh/html2canvas/workflows/CI/badge.svg?branch=master)
-[![NPM Downloads](https://img.shields.io/npm/dm/html2canvas.svg)](https://www.npmjs.org/package/html2canvas)
-[![NPM Version](https://img.shields.io/npm/v/html2canvas.svg)](https://www.npmjs.org/package/html2canvas)
+![CI](https://github.com/wtto00/html2canvas/workflows/CI/badge.svg?branch=master)
+[![NPM Downloads](https://img.shields.io/npm/dm/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
+[![NPM Version](https://img.shields.io/npm/v/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
 
 #### JavaScript HTML renderer
 
@@ -43,6 +43,14 @@ The library should work fine on the following browsers (with `Promise` polyfill)
 
 As each CSS property needs to be manually built to be supported, there are a number of properties that are not yet supported.
 
+### Install
+
+```shell
+pnpm add @wtto00/html2canvas
+# yarn add @wtto00/html2canvas
+# npm i @wtto00/html2canvas
+```
+
 ### Usage
 
 The html2canvas library utilizes `Promise`s and expects them to be available in the global context. If you wish to
@@ -54,9 +62,11 @@ To render an `element` with html2canvas, simply call:
 
 The function returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) containing the `<canvas>` element. Simply add a promise fulfillment handler to the promise using `then`:
 
-    html2canvas(document.body).then(function(canvas) {
-        document.body.appendChild(canvas);
-    });
+```js
+html2canvas(document.body).then(function (canvas) {
+    document.body.appendChild(canvas);
+});
+```
 
 ### Building
 
@@ -64,19 +74,25 @@ You can download ready builds [here](https://github.com/niklasvh/html2canvas/rel
 
 Clone git repository:
 
-    $ git clone git://github.com/niklasvh/html2canvas.git
+```shell
+git clone git://github.com/wtto00/html2canvas.git
+```
 
 Install dependencies:
 
-    $ npm install
+```shell
+npm install
+```
 
 Build browser bundle
 
-    $ npm run build
+```shell
+npm run build
+```
 
 ### Examples
 
-For more information and examples, please visit the [homepage](https://html2canvas.hertzen.com) or try the [test console](https://html2canvas.hertzen.com/tests/).
+For more information and examples, please visit the [homepage](https://wtto00.github.io/html2canvas) or try the [test console](https://wtto00.github.io/html2canvas/tests/).
 
 ### Contributing
 
