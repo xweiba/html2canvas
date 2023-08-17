@@ -15,8 +15,8 @@ If this helps you a lot, please buy me a coffee.
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/niklasvh/html2canvas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 ![CI](https://github.com/wtto00/html2canvas/workflows/CI/badge.svg?branch=master)
-[![NPM Downloads](https://img.shields.io/npm/dm/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
-[![NPM Version](https://img.shields.io/npm/v/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
+[![NPM Downloads](https://img.shields.io/npm/dm/@wtto00/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
+[![NPM Version](https://img.shields.io/npm/v/@wtto00/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
 
 #### JavaScript HTML renderer
 
