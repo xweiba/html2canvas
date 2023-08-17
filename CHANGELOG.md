@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.4.2 (2023-08-17)
+
+
+### ci
+
+* release version ([617e52a](https://github.com/wtto00/html2canvas/commit/617e52a89d37c17438c7ab389ccd7ca79e9dc4af))
+
+
+
 ## [1.4.2] (2023-08-17)
 
 ### feat
