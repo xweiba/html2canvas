@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -101,18 +101,6 @@ jobs:
           - os: macos-latest
             name: OSX Safari Stable
             targetBrowser: Safari_Stable
-          - os: macos-10.15
-            name: iOS Simulator Safari 12
-            targetBrowser: Safari_IOS_12
-            xcode: /Applications/Xcode_10.3.app
-          - os: macos-10.15
-            name: iOS Simulator Safari 13
-            targetBrowser: Safari_IOS_13
-            xcode: /Applications/Xcode_11.7.app
-          - os: macos-10.15
-            name: iOS Simulator Safari 14
-            targetBrowser: Safari_IOS_14
-            xcode: /Applications/Xcode_12.4.app
           - os: macos-11
             name: iOS Simulator Safari 15.0
             targetBrowser: Safari_IOS_15_0
@@ -139,7 +127,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -240,7 +228,7 @@ jobs:
         run: cd npm && tar -xvzf "html2canvas.tgz"
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
           registry-url: 'https://registry.npmjs.org'
       - name: NPM Publish
         run: cd npm/package && npm publish
@@ -254,7 +242,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -327,7 +315,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v2
         env:
