@@ -24,10 +24,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:niklasvh/html2canvas.git"
+        "url": "git@github.com:cantoo-scribe/html2canvas.git"
     },
     "bugs": {
-        "url": "https://github.com/niklasvh/html2canvas/issues"
+        "url": "https://github.com/cantoo-scribe/html2canvas//issues"
     },
     "devDependencies": {
         "@types/express": "^4.17.17",
