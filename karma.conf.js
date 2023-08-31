@@ -127,6 +127,10 @@ module.exports = function(config) {
     const ciLauncher = launchers[process.env.TARGET_BROWSER];
 
     const customLaunchers = ciLauncher ? {target_browser: ciLauncher} : {
+        Puppeteer_Chrome: {
+            base: 'Puppeteer',
+            flags: ['--no-sandbox']
+        },
         stable_chrome: {
             base: 'ChromeHeadless'
         },
@@ -197,7 +201,7 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha', 'inline-mocha-fix'],
+        frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
         files: [
@@ -209,9 +213,6 @@ module.exports = function(config) {
 
         plugins: [
             'karma-*',
-            {
-                'framework:inline-mocha-fix': ['factory', injectTypedArrayPolyfills]
-            },
             {
                 'launcher:MobileSafari': ['type', MobileSafari]
             }
@@ -277,13 +278,6 @@ module.exports = function(config) {
             '/node_modules': `http://localhost:${port}/base/node_modules`,
             '/tests': `http://localhost:${port}/base/tests`,
             '/assets': `http://localhost:${port}/base/tests/assets`
-        },
-
-        client: {
-            mocha: {
-                // change Karma's debug.html to the mocha web reporter
-                reporter: 'html'
-            }
         },
 
         captureTimeout: 300000,

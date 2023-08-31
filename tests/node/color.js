@@ -1,3 +1,5 @@
+// @ts-check
+// @ts-ignore
 const Color = require('../../dist/npm/Color').default;
 const assert = require('assert');
 

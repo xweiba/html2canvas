@@ -12,10 +12,14 @@
         "sourceMap": true,
         "outDir": "dist/lib",
         "declaration": true,
+        "skipLibCheck": true,
         "declarationDir": "dist/types",
+        "esModuleInterop": true,
         "resolveJsonModule": true
     },
     "include": [
-        "src"
+        "src",
+        "scripts/**/*.ts",
+        "tests/**/*.ts"
     ]
 }

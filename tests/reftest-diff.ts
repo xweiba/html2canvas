@@ -22,7 +22,6 @@ describe('Image diff', () => {
         const updated = resolve(__dirname, '../tmp/reftests/', filename);
         const buffer = await promises.readFile(updated);
 
-        // @ts-ignore
         expect(buffer).toMatchImageSnapshot({
             customSnapshotsDir,
             customSnapshotIdentifier: () => filename,

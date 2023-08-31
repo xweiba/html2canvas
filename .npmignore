@@ -19,4 +19,4 @@ tmp/
 jest.config.js
 karma.conf.js
 karma.js
-rollup.config.ts
+webpack.config.js

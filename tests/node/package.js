@@ -1,4 +1,7 @@
+// @ts-check
+
 const assert = require('assert');
+// @ts-ignore
 const html2canvas = require('../../');
 
 describe('Package', () => {
