@@ -220,7 +220,7 @@ export class DocumentCloner {
             clonedCanvas.width = canvas.width;
             clonedCanvas.height = canvas.height;
             const ctx = canvas.getContext('2d');
-            const clonedCtx = clonedCanvas.getContext('2d', { willReadFrequently: true });
+            const clonedCtx = clonedCanvas.getContext('2d', {willReadFrequently: true});
             if (clonedCtx) {
                 if (!this.options.allowTaint && ctx) {
                     clonedCtx.putImageData(ctx.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
@@ -479,10 +479,24 @@ export class DocumentCloner {
     }
 
     static destroy(container: HTMLIFrameElement): boolean {
+        try {
+            // Clear the iframe's content
+            container.src = 'about:blank';
+
+            // Optionally allow the browser to handle garbage collection
+            if (container.contentWindow) {
+                container.contentWindow.document.open();
+                container.contentWindow.document.write('');
+                container.contentWindow.document.close();
+            }
+        } catch {}
+
+        // Remove the iframe from the DOM
         if (container.parentNode) {
             container.parentNode.removeChild(container);
             return true;
         }
+
         return false;
     }
 }
