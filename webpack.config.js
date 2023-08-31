@@ -9,13 +9,12 @@ const banner = `/*!
  * Released under ${pkg.license} License
  */`;
 
-module.exports = {
+const commonConfig = {
     mode: 'production',
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'html2canvas.min.js', // Updated filename to match your convention
-        library: pkg.name,
+        library: 'html2canvas',
         libraryTarget: 'umd',
         umdNamedDefine: true
     },
@@ -36,6 +35,37 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new webpack.BannerPlugin(banner),
+        new webpack.SourceMapDevToolPlugin({
+            filename: '[name].js.map',
+        }),
+    ],
+};
+
+const nonMinifiedConfig = {
+    ...commonConfig,
+    output: {
+        ...commonConfig.output,
+        filename: 'html2canvas.js',
+    }
+};
+
+const esmConfig = {
+    ...commonConfig,
+    output: {
+        ...commonConfig.output,
+        filename: 'html2canvas.esm.js',
+    },
+    // ... ES module-specific configurations
+};
+
+const minifiedConfig = {
+    ...commonConfig,
+    output: {
+        ...commonConfig.output,
+        filename: 'html2canvas.min.js',
+    },
     optimization: {
         minimize: true,
         minimizer: [new TerserPlugin({
@@ -47,10 +77,6 @@ module.exports = {
             extractComments: false,
         })],
     },
-    plugins: [
-        new webpack.BannerPlugin(banner),
-        new webpack.SourceMapDevToolPlugin({
-            filename: '[name].js.map',
-        }),
-    ],
 };
+
+module.exports = [esmConfig, nonMinifiedConfig, minifiedConfig];

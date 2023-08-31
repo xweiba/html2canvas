@@ -2,7 +2,7 @@
     "title": "html2canvas",
     "name": "@cantoo/html2canvas",
     "description": "Screenshots with JavaScript",
-    "main": "dist/html2canvas.js",
+    "main": "dist/html2canvas.min.js",
     "module": "dist/html2canvas.esm.js",
     "typings": "dist/types/src/index.d.ts",
     "browser": "dist/html2canvas.js",
