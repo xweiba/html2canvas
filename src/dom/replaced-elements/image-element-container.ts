@@ -22,7 +22,7 @@ export class ImageElementContainer extends ElementContainer {
     private isInlinedSvg = () => ImageElementContainer.INLINED_SVG.test(this.src);
     private isSvg = () => ImageElementContainer.SVG.test(this.src);
 
-    public setup(img: HTMLImageElement) {
+    setup(img: HTMLImageElement) {
         if (this.isSvg()) return;
 
         if (this.isInlinedSvg()) {

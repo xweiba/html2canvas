@@ -42,20 +42,16 @@ export class Cache {
         private readonly _options: ResourceOptions
     ) {}
 
-    addImage(src: string): Promise<void> {
-        const result = Promise.resolve();
-        if (this.has(src)) {
-            return result;
-        }
-
+    addImage(src: string): boolean {
+        if (this.has(src)) return true;
         if (isBlobImage(src) || isRenderable(src)) {
             (this._cache[src] = this.loadImage(src)).catch(() => {
                 // prevent unhandled rejection
             });
-            return result;
-        }
 
-        return result;
+            return true;
+        }
+        return false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
