@@ -21,5 +21,6 @@
         "src",
         "scripts/**/*.ts",
         "tests/**/*.ts"
-    ]
+    ],
+    "exclude": ["dist", "build", "node_modules"]
 }
