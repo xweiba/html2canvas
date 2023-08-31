@@ -268,31 +268,42 @@ export class CanvasRenderer extends Renderer {
         curves: BoundCurves,
         image: HTMLImageElement | HTMLCanvasElement
     ): void {
-        if (image && container.intrinsicWidth > 0 && container.intrinsicHeight > 0) {
-            const box = contentBox(container);
-            const path = calculatePaddingBoxPath(curves);
-            this.path(path);
-            const {src, dest} = calculateObjectFitBounds(
-                container.styles.objectFit,
-                container.intrinsicWidth,
-                container.intrinsicHeight,
-                box.width,
-                box.height
-            );
-            this.ctx.save();
-            this.ctx.clip();
-            this.ctx.drawImage(
-                image,
-                src.left,
-                src.top,
-                src.width,
-                src.height,
-                box.left + dest.left,
-                box.top + dest.top,
-                dest.width,
-                dest.height
-            );
-            this.ctx.restore();
+        if (image) {
+            const isContainerWSizes = container.intrinsicWidth > 0 && container.intrinsicHeight > 0;
+            const isSVGContainer =
+                container instanceof SVGElementContainer ||
+                (container instanceof ImageElementContainer && container.isSVG);
+            if (isContainerWSizes || isSVGContainer) {
+                const box = contentBox(container);
+                const path = calculatePaddingBoxPath(curves);
+                this.path(path);
+                const {src, dest} = calculateObjectFitBounds(
+                    container.styles.objectFit,
+                    container.intrinsicWidth,
+                    container.intrinsicHeight,
+                    box.width,
+                    box.height
+                );
+                this.ctx.save();
+                this.ctx.clip();
+                if (isContainerWSizes) {
+                    this.ctx.drawImage(
+                        image,
+                        src.left,
+                        src.top,
+                        src.width,
+                        src.height,
+                        box.left + dest.left,
+                        box.top + dest.top,
+                        dest.width,
+                        dest.height
+                    );
+                } else {
+                    // As usual it won't work in FF. https://bugzilla.mozilla.org/show_bug.cgi?id=700533
+                    this.ctx.drawImage(image, box.left, box.top, box.width, box.height);
+                }
+                this.ctx.restore();
+            }
         }
     }
 
@@ -308,6 +319,7 @@ export class CanvasRenderer extends Renderer {
         if (container instanceof ImageElementContainer) {
             try {
                 const image = await this.context.cache.match(container.src);
+                container.setup(image);
                 this.renderReplacedElement(container, curves, image);
             } catch (e) {
                 this.context.logger.error(`Error loading image ${container.src}`);

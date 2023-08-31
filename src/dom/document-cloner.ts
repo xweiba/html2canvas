@@ -393,7 +393,14 @@ export class DocumentCloner {
 
         const value = style.content;
         const document = clone.ownerDocument;
-        if (!document || !value || value === 'normal' || value === 'none' || value === '-moz-alt-content' || style.display === 'none') {
+        if (
+            !document ||
+            !value ||
+            value === 'normal' ||
+            value === 'none' ||
+            value === '-moz-alt-content' ||
+            style.display === 'none'
+        ) {
             return;
         }
 
