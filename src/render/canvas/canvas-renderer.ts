@@ -271,7 +271,9 @@ export class CanvasRenderer extends Renderer {
         curves: BoundCurves,
         image: HTMLImageElement | HTMLCanvasElement
     ): void {
-        if (image && container.intrinsicWidth > 0 && container.intrinsicHeight > 0) {
+        const intrinsicWidth = (image as HTMLImageElement).naturalWidth || container.intrinsicWidth;
+        const intrinsicHeight = (image as HTMLImageElement).naturalHeight || container.intrinsicHeight;
+        if (image && intrinsicWidth > 0 && intrinsicHeight > 0) {
             const box = contentBox(container);
             const path = calculatePaddingBoxPath(curves);
             this.path(path);
@@ -279,8 +281,8 @@ export class CanvasRenderer extends Renderer {
             this.ctx.clip();
             let sx = 0,
                 sy = 0,
-                sw: number = container.intrinsicWidth,
-                sh: number = container.intrinsicHeight,
+                sw: number = intrinsicWidth,
+                sh: number = intrinsicHeight,
                 dx: number = box.left,
                 dy: number = box.top,
                 dw: number = box.width,
@@ -299,10 +301,10 @@ export class CanvasRenderer extends Renderer {
             } else if (objectFit === OBJECT_FIT.COVER) {
                 if (imgRatio > boxRatio) {
                     sw = sh * boxRatio;
-                    sx += (container.intrinsicWidth - sw) / 2;
+                    sx += (intrinsicWidth - sw) / 2;
                 } else {
                     sh = sw / boxRatio;
-                    sy += (container.intrinsicHeight - sh) / 2;
+                    sy += (intrinsicHeight - sh) / 2;
                 }
             } else if (objectFit === OBJECT_FIT.NONE) {
                 if (sw > dw) {
