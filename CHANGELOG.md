@@ -2,14 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## 1.4.4 (2023-09-21)
+## 1.4.3 (2023-09-21)
 
 
 ### chore
 
 * document ([667f6a9](https://github.com/wtto00/html2canvas/commit/667f6a9cebd0a50a22535a65e3b1ad47e96545ac))
+### fix
 
-
+* On Safari, the object-fit property for SVG images is not effective.
 
 ## 1.4.2 (2023-08-17)
 
