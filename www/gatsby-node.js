@@ -38,7 +38,7 @@ exports.createPages = ({graphql, boundActionCreators}) => {
         `).then((result) => {
             result.data.allMarkdownRemark.edges.map(({node}) => {
                 createPage({
-                    path: 'html2canvas/' + node.fields.slug,
+                    path: node.fields.slug,
                     component: path.resolve(__dirname, `./src/templates/docs.js`),
                     context: {
                         // Data passed to context is available in page queries as GraphQL variables.

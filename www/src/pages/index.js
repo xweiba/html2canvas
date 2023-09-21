@@ -120,9 +120,9 @@ export default ({data}) => {
                             >
                                 Try it out
                             </a>
-                            <Link to={'./documentation'} css={linkStyle}>
+                            <a href="./documentation" css={linkStyle}>
                                 Documentation
-                            </Link>
+                            </a>
                         </div>
                         <div
                             css={{
@@ -167,10 +167,10 @@ export default ({data}) => {
                                 <h6>Install Yarn</h6>
                                 <code css={codeStyle}>yarn add html2canvas</code>
                                 <div css={{marginTop: '25px'}}>
-                                    <a href={'/dist/html2canvas.js'} css={linkStyle}>
+                                    <a href={'./dist/html2canvas.js'} css={linkStyle}>
                                         html2canvas.js
                                     </a>
-                                    <a href={'/dist/html2canvas.min.js'} css={linkStyle}>
+                                    <a href={'./dist/html2canvas.min.js'} css={linkStyle}>
                                         html2canvas.min.js
                                     </a>
                                 </div>
