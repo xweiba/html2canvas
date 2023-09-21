@@ -24,21 +24,21 @@ exports.createPages = ({graphql, boundActionCreators}) => {
     const {createPage} = boundActionCreators;
     return new Promise((resolve, reject) => {
         graphql(`
-      {
-        allMarkdownRemark {
-          edges {
-            node {
-              fields {
-                slug
-              }
+            {
+                allMarkdownRemark {
+                    edges {
+                        node {
+                            fields {
+                                slug
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
-    `).then(result => {
+        `).then((result) => {
             result.data.allMarkdownRemark.edges.map(({node}) => {
                 createPage({
-                    path: node.fields.slug,
+                    path: 'html2canvas/' + node.fields.slug,
                     component: path.resolve(__dirname, `./src/templates/docs.js`),
                     context: {
                         // Data passed to context is available in page queries as GraphQL variables.
