@@ -24,18 +24,18 @@ exports.createPages = ({graphql, boundActionCreators}) => {
     const {createPage} = boundActionCreators;
     return new Promise((resolve, reject) => {
         graphql(`
-      {
-        allMarkdownRemark {
-          edges {
-            node {
-              fields {
-                slug
-              }
+            {
+                allMarkdownRemark {
+                    edges {
+                        node {
+                            fields {
+                                slug
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
-    `).then(result => {
+        `).then((result) => {
             result.data.allMarkdownRemark.edges.map(({node}) => {
                 createPage({
                     path: node.fields.slug,
