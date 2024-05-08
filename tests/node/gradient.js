@@ -1,3 +1,6 @@
+// @ts-check
+
+// @ts-ignore
 const Gradient = require('../../dist/npm/Gradient');
 const assert = require('assert');
 

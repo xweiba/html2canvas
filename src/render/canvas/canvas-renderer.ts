@@ -1,50 +1,50 @@
-import {ElementPaint, parseStackingContexts, StackingContext} from '../stacking-context';
-import {asString, Color, isTransparent} from '../../css/types/color';
-import {ElementContainer, FLAGS} from '../../dom/element-container';
-import {BORDER_STYLE} from '../../css/property-descriptors/border-style';
-import {CSSParsedDeclaration} from '../../css';
-import {TextContainer} from '../../dom/text-container';
-import {Path, transformPath} from '../path';
-import {BACKGROUND_CLIP} from '../../css/property-descriptors/background-clip';
-import {BoundCurves, calculateBorderBoxPath, calculateContentBoxPath, calculatePaddingBoxPath} from '../bound-curves';
-import {BezierCurve, isBezierCurve} from '../bezier-curve';
-import {Vector} from '../vector';
-import {CSSImageType, CSSURLImage, isLinearGradient, isRadialGradient} from '../../css/types/image';
+import { contains } from '../../core/bitwise';
+import { Context } from '../../core/context';
+import { CSSParsedDeclaration } from '../../css';
+import { Bounds } from '../../css/layout/bounds';
+import { segmentGraphemes, TextBounds } from '../../css/layout/text';
+import { BACKGROUND_CLIP } from '../../css/property-descriptors/background-clip';
+import { BORDER_STYLE } from '../../css/property-descriptors/border-style';
+import { DIRECTION } from '../../css/property-descriptors/direction';
+import { DISPLAY } from '../../css/property-descriptors/display';
+import { computeLineHeight } from '../../css/property-descriptors/line-height';
+import { LIST_STYLE_TYPE } from '../../css/property-descriptors/list-style-type';
+import { PAINT_ORDER_LAYER } from '../../css/property-descriptors/paint-order';
+import { TEXT_ALIGN } from '../../css/property-descriptors/text-align';
+import { TEXT_DECORATION_LINE } from '../../css/property-descriptors/text-decoration-line';
+import { TextShadow } from '../../css/property-descriptors/text-shadow';
+import { isDimensionToken } from '../../css/syntax/parser';
+import { asString, Color, isTransparent } from '../../css/types/color';
+import { calculateGradientDirection, calculateRadius, processColorStops } from '../../css/types/functions/gradient';
+import { CSSImageType, CSSURLImage, isLinearGradient, isRadialGradient } from '../../css/types/image';
+import { FIFTY_PERCENT, getAbsoluteValue } from '../../css/types/length-percentage';
+import { ElementContainer, FLAGS } from '../../dom/element-container';
+import { SelectElementContainer } from '../../dom/elements/select-element-container';
+import { TextareaElementContainer } from '../../dom/elements/textarea-element-container';
+import { ReplacedElementContainer } from '../../dom/replaced-elements';
+import { CanvasElementContainer } from '../../dom/replaced-elements/canvas-element-container';
+import { IFrameElementContainer } from '../../dom/replaced-elements/iframe-element-container';
+import { ImageElementContainer } from '../../dom/replaced-elements/image-element-container';
+import { CHECKBOX, INPUT_COLOR, InputElementContainer, RADIO } from '../../dom/replaced-elements/input-element-container';
+import { SVGElementContainer } from '../../dom/replaced-elements/svg-element-container';
+import { TextContainer } from '../../dom/text-container';
+import { calculateBackgroundRendering, getBackgroundValueForIndex } from '../background';
+import { BezierCurve, isBezierCurve } from '../bezier-curve';
 import {
     parsePathForBorder,
     parsePathForBorderDoubleInner,
     parsePathForBorderDoubleOuter,
     parsePathForBorderStroke
 } from '../border';
-import {calculateBackgroundRendering, getBackgroundValueForIndex} from '../background';
-import {isDimensionToken} from '../../css/syntax/parser';
-import {segmentGraphemes, TextBounds} from '../../css/layout/text';
-import {ImageElementContainer} from '../../dom/replaced-elements/image-element-container';
-import {contentBox} from '../box-sizing';
-import {CanvasElementContainer} from '../../dom/replaced-elements/canvas-element-container';
-import {SVGElementContainer} from '../../dom/replaced-elements/svg-element-container';
-import {ReplacedElementContainer} from '../../dom/replaced-elements';
-import {EffectTarget, IElementEffect, isClipEffect, isOpacityEffect, isTransformEffect} from '../effects';
-import {contains} from '../../core/bitwise';
-import {calculateGradientDirection, calculateRadius, processColorStops} from '../../css/types/functions/gradient';
-import {FIFTY_PERCENT, getAbsoluteValue} from '../../css/types/length-percentage';
-import {TEXT_DECORATION_LINE} from '../../css/property-descriptors/text-decoration-line';
-import {FontMetrics} from '../font-metrics';
-import {DISPLAY} from '../../css/property-descriptors/display';
-import {Bounds} from '../../css/layout/bounds';
-import {LIST_STYLE_TYPE} from '../../css/property-descriptors/list-style-type';
-import {computeLineHeight} from '../../css/property-descriptors/line-height';
-import {CHECKBOX, INPUT_COLOR, InputElementContainer, RADIO} from '../../dom/replaced-elements/input-element-container';
-import {TEXT_ALIGN} from '../../css/property-descriptors/text-align';
-import {TextareaElementContainer} from '../../dom/elements/textarea-element-container';
-import {SelectElementContainer} from '../../dom/elements/select-element-container';
-import {IFrameElementContainer} from '../../dom/replaced-elements/iframe-element-container';
-import {TextShadow} from '../../css/property-descriptors/text-shadow';
-import {PAINT_ORDER_LAYER} from '../../css/property-descriptors/paint-order';
-import {Renderer} from '../renderer';
-import {Context} from '../../core/context';
-import {DIRECTION} from '../../css/property-descriptors/direction';
-import {OBJECT_FIT} from '../../css/property-descriptors/object-fit';
+import { BoundCurves, calculateBorderBoxPath, calculateContentBoxPath, calculatePaddingBoxPath } from '../bound-curves';
+import { contentBox } from '../box-sizing';
+import { EffectTarget, IElementEffect, isClipEffect, isOpacityEffect, isTransformEffect } from '../effects';
+import { FontMetrics } from '../font-metrics';
+import { calculateObjectFitBounds } from '../object-fit';
+import { Path, reversePath, transformPath } from '../path';
+import { Renderer } from '../renderer';
+import { ElementPaint, parseStackingContexts, StackingContext } from '../stacking-context';
+import { Vector } from '../vector';
 
 export type RenderConfigurations = RenderOptions & {
     backgroundColor: Color | null;
@@ -58,8 +58,6 @@ export interface RenderOptions {
     width: number;
     height: number;
 }
-
-const MASK_OFFSET = 10000;
 
 export class CanvasRenderer extends Renderer {
     canvas: HTMLCanvasElement;
@@ -190,7 +188,7 @@ export class CanvasRenderer extends Renderer {
                 switch (paintOrderLayer) {
                     case PAINT_ORDER_LAYER.FILL:
                         this.ctx.fillStyle = asString(styles.color);
-                        this.renderTextWithLetterSpacing(text, styles.letterSpacing, baseline);
+                        this.renderTextWithLetterSpacing(text, styles.letterSpacing, styles.fontSize.number);
                         const textShadows: TextShadow = styles.textShadow;
 
                         if (textShadows.length && text.text.trim().length) {
@@ -203,7 +201,11 @@ export class CanvasRenderer extends Renderer {
                                     this.ctx.shadowOffsetY = textShadow.offsetY.number * this.options.scale;
                                     this.ctx.shadowBlur = textShadow.blur.number;
 
-                                    this.renderTextWithLetterSpacing(text, styles.letterSpacing, baseline);
+                                    this.renderTextWithLetterSpacing(
+                                        text,
+                                        styles.letterSpacing,
+                                        styles.fontSize.number
+                                    );
                                 });
 
                             this.ctx.shadowColor = '';
@@ -271,86 +273,42 @@ export class CanvasRenderer extends Renderer {
         curves: BoundCurves,
         image: HTMLImageElement | HTMLCanvasElement
     ): void {
-        const intrinsicWidth = (image as HTMLImageElement).naturalWidth || container.intrinsicWidth;
-        const intrinsicHeight = (image as HTMLImageElement).naturalHeight || container.intrinsicHeight;
-        if (image && intrinsicWidth > 0 && intrinsicHeight > 0) {
-            const box = contentBox(container);
-            const path = calculatePaddingBoxPath(curves);
-            this.path(path);
-            this.ctx.save();
-            this.ctx.clip();
-            let sx = 0,
-                sy = 0,
-                sw: number = intrinsicWidth,
-                sh: number = intrinsicHeight,
-                dx: number = box.left,
-                dy: number = box.top,
-                dw: number = box.width,
-                dh: number = box.height;
-            const {objectFit} = container.styles;
-            const boxRatio = dw / dh;
-            const imgRatio = sw / sh;
-            if (objectFit === OBJECT_FIT.CONTAIN) {
-                if (imgRatio > boxRatio) {
-                    dh = dw / imgRatio;
-                    dy += (box.height - dh) / 2;
+        if (image) {
+            const isContainerWSizes = container.intrinsicWidth > 0 && container.intrinsicHeight > 0;
+            const isSVGContainer =
+                container instanceof SVGElementContainer ||
+                (container instanceof ImageElementContainer && container.isSVG);
+            if (isContainerWSizes || isSVGContainer) {
+                const box = contentBox(container);
+                const path = calculatePaddingBoxPath(curves);
+                this.path(path);
+                const {src, dest} = calculateObjectFitBounds(
+                    container.styles.objectFit,
+                    container.intrinsicWidth,
+                    container.intrinsicHeight,
+                    box.width,
+                    box.height
+                );
+                this.ctx.save();
+                this.ctx.clip();
+                if (isContainerWSizes) {
+                    this.ctx.drawImage(
+                        image,
+                        src.left,
+                        src.top,
+                        src.width,
+                        src.height,
+                        box.left + dest.left,
+                        box.top + dest.top,
+                        dest.width,
+                        dest.height
+                    );
                 } else {
-                    dw = dh * imgRatio;
-                    dx += (box.width - dw) / 2;
+                    // As usual it won't work in FF. https://bugzilla.mozilla.org/show_bug.cgi?id=700533
+                    this.ctx.drawImage(image, box.left, box.top, box.width, box.height);
                 }
-            } else if (objectFit === OBJECT_FIT.COVER) {
-                if (imgRatio > boxRatio) {
-                    sw = sh * boxRatio;
-                    sx += (intrinsicWidth - sw) / 2;
-                } else {
-                    sh = sw / boxRatio;
-                    sy += (intrinsicHeight - sh) / 2;
-                }
-            } else if (objectFit === OBJECT_FIT.NONE) {
-                if (sw > dw) {
-                    sx += (sw - dw) / 2;
-                    sw = dw;
-                } else {
-                    dx += (dw - sw) / 2;
-                    dw = sw;
-                }
-                if (sh > dh) {
-                    sy += (sh - dh) / 2;
-                    sh = dh;
-                } else {
-                    dy += (dh - sh) / 2;
-                    dh = sh;
-                }
-            } else if (objectFit === OBJECT_FIT.SCALE_DOWN) {
-                const containW = imgRatio > boxRatio ? dw : dh * imgRatio;
-                const noneW = sw > dw ? sw : dw;
-                if (containW < noneW) {
-                    if (imgRatio > boxRatio) {
-                        dh = dw / imgRatio;
-                        dy += (box.height - dh) / 2;
-                    } else {
-                        dw = dh * imgRatio;
-                        dx += (box.width - dw) / 2;
-                    }
-                } else {
-                    if (sw > dw) {
-                        sx += (sw - dw) / 2;
-                        sw = dw;
-                    } else {
-                        dx += (dw - sw) / 2;
-                        dw = sw;
-                    }
-                    if (sh > dh) {
-                        sy += (sh - dh) / 2;
-                        sh = dh;
-                    } else {
-                        dy += (dh - sh) / 2;
-                        dh = sh;
-                    }
-                }
+                this.ctx.restore();
             }
-            this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
-            this.ctx.restore();
         }
     }
 
@@ -366,6 +324,7 @@ export class CanvasRenderer extends Renderer {
         if (container instanceof ImageElementContainer) {
             try {
                 const image = await this.context.cache.match(container.src);
+                container.setup(image);
                 this.renderReplacedElement(container, curves, image);
             } catch (e) {
                 this.context.logger.error(`Error loading image ${container.src}`);
@@ -586,12 +545,16 @@ export class CanvasRenderer extends Renderer {
 
     mask(paths: Path[]): void {
         this.ctx.beginPath();
+        this.ctx.save();
+        // reset tranform to identity
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.ctx.moveTo(0, 0);
         this.ctx.lineTo(this.canvas.width, 0);
         this.ctx.lineTo(this.canvas.width, this.canvas.height);
         this.ctx.lineTo(0, this.canvas.height);
         this.ctx.lineTo(0, 0);
-        this.formatPath(paths.slice(0).reverse());
+        this.ctx.restore();
+        this.formatPath(reversePath(paths));
         this.ctx.closePath();
     }
 
@@ -609,7 +572,6 @@ export class CanvasRenderer extends Renderer {
             } else {
                 this.ctx.lineTo(start.x, start.y);
             }
-
             if (isBezierCurve(point)) {
                 this.ctx.bezierCurveTo(
                     point.startControl.x,
@@ -632,9 +594,10 @@ export class CanvasRenderer extends Renderer {
     }
 
     resizeImage(image: HTMLImageElement, width: number, height: number): HTMLCanvasElement | HTMLImageElement {
-        if (image.width === width && image.height === height) {
-            return image;
-        }
+        // Commented out to solve "Operation is insecure" on safari
+        // if (image.width === width && image.height === height) {
+        //     return image;
+        // }
 
         const ownerDocument = this.canvas.ownerDocument ?? document;
         const canvas = ownerDocument.createElement('canvas');
@@ -679,7 +642,7 @@ export class CanvasRenderer extends Renderer {
                 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
                 const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
 
-                processColorStops(backgroundImage.stops, lineLength).forEach((colorStop) =>
+                processColorStops(backgroundImage.stops, lineLength || 1).forEach((colorStop) =>
                     gradient.addColorStop(colorStop.stop, asString(colorStop.color))
                 );
 
@@ -764,12 +727,10 @@ export class CanvasRenderer extends Renderer {
             {style: styles.borderBottomStyle, color: styles.borderBottomColor, width: styles.borderBottomWidth},
             {style: styles.borderLeftStyle, color: styles.borderLeftColor, width: styles.borderLeftWidth}
         ];
-
         const backgroundPaintingArea = calculateBackgroundCurvedPaintingArea(
             getBackgroundValueForIndex(styles.backgroundClip, 0),
             paint.curves
         );
-
         if (hasBackground || styles.boxShadow.length) {
             this.ctx.save();
             this.path(backgroundPaintingArea);
@@ -777,7 +738,21 @@ export class CanvasRenderer extends Renderer {
 
             if (!isTransparent(styles.backgroundColor)) {
                 this.ctx.fillStyle = asString(styles.backgroundColor);
-                this.ctx.fill();
+
+                if (styles.display === DISPLAY.INLINE) {
+                    for (const textNode of paint.container.textNodes) {
+                        for (const textBound of textNode.textBounds) {
+                            this.ctx.fillRect(
+                                textBound.bounds.left,
+                                textBound.bounds.top,
+                                textBound.bounds.width,
+                                textBound.bounds.height
+                            );
+                        }
+                    }
+                } else {
+                    this.ctx.fill();
+                }
             }
 
             await this.renderBackgroundImage(paint.container);
@@ -790,15 +765,14 @@ export class CanvasRenderer extends Renderer {
                 .forEach((shadow) => {
                     this.ctx.save();
                     const borderBoxArea = calculateBorderBoxPath(paint.curves);
-                    const maskOffset = shadow.inset ? 0 : MASK_OFFSET;
+                    const maskOffset = shadow.inset ? 0 : 1;
                     const shadowPaintingArea = transformPath(
                         borderBoxArea,
-                        -maskOffset + (shadow.inset ? 1 : -1) * shadow.spread.number,
-                        (shadow.inset ? 1 : -1) * shadow.spread.number,
+                        shadow.offsetX.number - maskOffset + (shadow.inset ? 1 : -1) * shadow.spread.number,
+                        shadow.offsetY.number + (shadow.inset ? 1 : -1) * shadow.spread.number,
                         shadow.spread.number * (shadow.inset ? -2 : 2),
                         shadow.spread.number * (shadow.inset ? -2 : 2)
                     );
-
                     if (shadow.inset) {
                         this.path(borderBoxArea);
                         this.ctx.clip();
@@ -808,13 +782,14 @@ export class CanvasRenderer extends Renderer {
                         this.ctx.clip();
                         this.path(shadowPaintingArea);
                     }
-
-                    this.ctx.shadowOffsetX = shadow.offsetX.number + maskOffset;
-                    this.ctx.shadowOffsetY = shadow.offsetY.number;
+                    this.ctx.shadowOffsetX = maskOffset;
+                    this.ctx.shadowOffsetY = 0;
                     this.ctx.shadowColor = asString(shadow.color);
                     this.ctx.shadowBlur = shadow.blur.number;
-                    this.ctx.fillStyle = shadow.inset ? asString(shadow.color) : 'rgba(0,0,0,1)';
-
+                    this.ctx.fillStyle = asString(shadow.color);
+                    if (shadow.blur.number) {
+                        this.ctx.filter = `blur(${shadow.blur.number}px)`;
+                    }
                     this.ctx.fill();
                     this.ctx.restore();
                 });

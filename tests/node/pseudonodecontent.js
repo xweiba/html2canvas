@@ -1,3 +1,6 @@
+// @ts-check
+
+// @ts-ignore
 const PseudoNodeContent = require('../../dist/npm/PseudoNodeContent');
 const assert = require('assert');
 

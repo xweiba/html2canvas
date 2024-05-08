@@ -1,3 +1,5 @@
+// @ts-check
+
 const ACTION = /^\s*(\w+ ?\w*):\s+(.+)/;
 const TEXT = /^\s*\[(-?\d+), (-?\d+)\]:\s+(.+)/;
 const WINDOW_SIZE = /^\[(-?\d+), (-?\d+)\]$/;

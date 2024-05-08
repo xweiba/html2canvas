@@ -5,7 +5,7 @@
         "prettier"
     ],
     "parserOptions": {
-        "project": "./tsconfig.json",
+        "project": ["./tsconfig.json", "./tests/tsconfig.json", "./scripts/tsconfig.json"],
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
@@ -14,7 +14,6 @@
         "prettier"
     ],
     "rules": {
-        "no-console": ["error", { "allow": ["warn", "error"] }],
         "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
         "@typescript-eslint/interface-name-prefix": "off",
         "@typescript-eslint/explicit-function-return-type": "off",

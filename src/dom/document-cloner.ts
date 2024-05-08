@@ -129,11 +129,17 @@ export class DocumentCloner {
             return iframe;
         });
 
+        const adoptedNode = documentClone.adoptNode(this.documentElement);
+        /**
+         * The baseURI of the document will be lost after documentClone.open().
+         * We can avoid it by adding <base> element.
+         * */
+        addBase(adoptedNode, documentClone);
         documentClone.open();
         documentClone.write(`${serializeDoctype(document.doctype)}<html></html>`);
         // Chrome scrolls the parent document for some reason after the write to the cloned window???
         restoreOwnerScroll(this.referenceElement.ownerDocument, scrollX, scrollY);
-        documentClone.replaceChild(documentClone.adoptNode(this.documentElement), documentClone.documentElement);
+        documentClone.replaceChild(adoptedNode, documentClone.documentElement);
         documentClone.close();
 
         return iframeLoad;
@@ -220,7 +226,7 @@ export class DocumentCloner {
             clonedCanvas.width = canvas.width;
             clonedCanvas.height = canvas.height;
             const ctx = canvas.getContext('2d');
-            const clonedCtx = clonedCanvas.getContext('2d');
+            const clonedCtx = clonedCanvas.getContext('2d', {willReadFrequently: true});
             if (clonedCtx) {
                 if (!this.options.allowTaint && ctx) {
                     clonedCtx.putImageData(ctx.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
@@ -387,7 +393,14 @@ export class DocumentCloner {
 
         const value = style.content;
         const document = clone.ownerDocument;
-        if (!document || !value || value === 'none' || value === '-moz-alt-content' || style.display === 'none') {
+        if (
+            !document ||
+            !value ||
+            value === 'normal' ||
+            value === 'none' ||
+            value === '-moz-alt-content' ||
+            style.display === 'none'
+        ) {
             return;
         }
 
@@ -479,10 +492,24 @@ export class DocumentCloner {
     }
 
     static destroy(container: HTMLIFrameElement): boolean {
+        try {
+            // Clear the iframe's content
+            container.src = 'about:blank';
+
+            // Optionally allow the browser to handle garbage collection
+            if (container.contentWindow) {
+                container.contentWindow.document.open();
+                container.contentWindow.document.write('');
+                container.contentWindow.document.close();
+            }
+        } catch {}
+
+        // Remove the iframe from the DOM
         if (container.parentNode) {
             container.parentNode.removeChild(container);
             return true;
         }
+
         return false;
     }
 }
@@ -503,6 +530,8 @@ const createIFrameContainer = (ownerDocument: Document, bounds: Bounds): HTMLIFr
     cloneIframeContainer.style.border = '0';
     cloneIframeContainer.width = bounds.width.toString();
     cloneIframeContainer.height = bounds.height.toString();
+    cloneIframeContainer.style.width = bounds.width.toString() + 'px';
+    cloneIframeContainer.style.height = bounds.height.toString() + 'px';
     cloneIframeContainer.scrolling = 'no'; // ios won't scroll without it
     cloneIframeContainer.setAttribute(IGNORE_ATTRIBUTE, 'true');
     ownerDocument.body.appendChild(cloneIframeContainer);
@@ -634,4 +663,11 @@ const createStyles = (body: HTMLElement, styles: string) => {
         style.textContent = styles;
         body.appendChild(style);
     }
+};
+
+const addBase = (targetELement: HTMLElement, referenceDocument: Document) => {
+    const baseNode = referenceDocument.createElement('base');
+    baseNode.href = referenceDocument.baseURI;
+    const headEle = targetELement.getElementsByTagName('head').item(0);
+    headEle?.insertBefore(baseNode, headEle?.firstChild ?? null);
 };

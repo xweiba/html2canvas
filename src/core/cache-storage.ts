@@ -37,22 +37,21 @@ export class Cache {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private readonly _cache: {[key: string]: Promise<any>} = {};
 
-    constructor(private readonly context: Context, private readonly _options: ResourceOptions) {}
+    constructor(
+        private readonly context: Context,
+        private readonly _options: ResourceOptions
+    ) {}
 
-    addImage(src: string): Promise<void> {
-        const result = Promise.resolve();
-        if (this.has(src)) {
-            return result;
-        }
-
+    addImage(src: string): boolean {
+        if (this.has(src)) return true;
         if (isBlobImage(src) || isRenderable(src)) {
             (this._cache[src] = this.loadImage(src)).catch(() => {
                 // prevent unhandled rejection
             });
-            return result;
-        }
 
-        return result;
+            return true;
+        }
+        return false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,7 +97,9 @@ export class Cache {
                 img.crossOrigin = 'anonymous';
             }
             img.src = src;
-            if (img.complete === true) {
+            if (/^data:/.test(src)) {
+                resolve(img);
+            } else if (img.complete === true) {
                 // Inline XML images may fail to parse, throwing an Error later on
                 setTimeout(() => resolve(img), 500);
             }
@@ -172,6 +173,6 @@ const INLINE_IMG = /^data:image\/.*/i;
 const isRenderable = (src: string): boolean => FEATURES.SUPPORT_SVG_DRAWING || !isSVG(src);
 const isInlineImage = (src: string): boolean => INLINE_IMG.test(src);
 const isInlineBase64Image = (src: string): boolean => INLINE_BASE64.test(src);
-const isBlobImage = (src: string): boolean => src.substr(0, 4) === 'blob';
+const isBlobImage = (src: string): boolean => src.slice(0, 4) === 'blob';
 
-const isSVG = (src: string): boolean => src.substr(-3).toLowerCase() === 'svg' || INLINE_SVG.test(src);
+const isSVG = (src: string): boolean => src.slice(-3).toLowerCase() === 'svg' || INLINE_SVG.test(src);
