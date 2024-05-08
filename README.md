@@ -1,22 +1,13 @@
 # html2canvas
 
-This project is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/html2canvas). It fixs some bugs, and adds some features.
+This project is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/html2canvas).
 
--   🌟 Support `object-fit` of `<img/>`
-
-If this helps you a lot, please buy me a coffee.
-
-<a href="https://www.buymeacoffee.com/wtto00" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-<a href="https://afdian.net/a/wtto00" target="_blank"><img style="height: 60px !important;width: 217px !important;" src="https://pic1.afdiancdn.com/static/img/welcome/button-sponsorme.jpg" alt="sponsorme"></a >
-
----
-
-[Homepage](https://wtto00.github.io/html2canvas) | [Downloads](https://github.com/wtto00/html2canvas/releases) | [Questions](https://github.com/wtto00/html2canvas/discussions/categories/q-a)
+[Homepage](https://html2canvas.github.io/html2canvas) | [Downloads](https://github.com/html2canvas/html2canvas/releases) | [Questions](https://github.com/html2canvas/html2canvas/discussions/categories/q-a)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/niklasvh/html2canvas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-![CI](https://github.com/wtto00/html2canvas/workflows/CI/badge.svg?branch=master)
-[![NPM Downloads](https://img.shields.io/npm/dm/@wtto00/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
-[![NPM Version](https://img.shields.io/npm/v/@wtto00/html2canvas.svg)](https://www.npmjs.org/package/@wtto00/html2canvas)
+![CI](https://github.com/html2canvas/html2canvas/workflows/CI/badge.svg?branch=master)
+[![NPM Downloads](https://img.shields.io/npm/dm/@html2canvas/html2canvas.svg)](https://www.npmjs.org/package/@html2canvas/html2canvas)
+[![NPM Version](https://img.shields.io/npm/v/@html2canvas/html2canvas.svg)](https://www.npmjs.org/package/@html2canvas/html2canvas)
 
 #### JavaScript HTML renderer
 
@@ -46,9 +37,9 @@ As each CSS property needs to be manually built to be supported, there are a num
 ### Install
 
 ```shell
-pnpm add @wtto00/html2canvas
-# yarn add @wtto00/html2canvas
-# npm i @wtto00/html2canvas
+pnpm add @html2canvas/html2canvas
+# yarn add @html2canvas/html2canvas
+# npm i @html2canvas/html2canvas
 ```
 
 ### Usage
@@ -75,7 +66,7 @@ You can download ready builds [here](https://github.com/niklasvh/html2canvas/rel
 Clone git repository:
 
 ```shell
-git clone git://github.com/wtto00/html2canvas.git
+git clone git://github.com/html2canvas/html2canvas.git
 ```
 
 Install dependencies:
@@ -92,7 +83,7 @@ npm run build
 
 ### Examples
 
-For more information and examples, please visit the [homepage](https://wtto00.github.io/html2canvas) or try the [test console](https://wtto00.github.io/html2canvas/tests/).
+For more information and examples, please visit the [homepage](https://html2canvas.github.io/html2canvas) or try the [test console](https://html2canvas.github.io/html2canvas/tests/).
 
 ### Contributing
 
