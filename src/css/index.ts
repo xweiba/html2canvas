@@ -1,3 +1,5 @@
+import {contains} from '../core/bitwise';
+import {Context} from '../core/context';
 import {CSSPropertyDescriptor, PropertyDescriptorParsingType} from './IPropertyDescriptor';
 import {backgroundClip} from './property-descriptors/background-clip';
 import {backgroundColor} from './property-descriptors/background-color';
@@ -30,10 +32,20 @@ import {
     borderRightWidth,
     borderTopWidth
 } from './property-descriptors/border-width';
+import {boxShadow} from './property-descriptors/box-shadow';
 import {color} from './property-descriptors/color';
+import {content} from './property-descriptors/content';
+import {counterIncrement} from './property-descriptors/counter-increment';
+import {counterReset} from './property-descriptors/counter-reset';
 import {direction} from './property-descriptors/direction';
-import {display, DISPLAY} from './property-descriptors/display';
-import {float, FLOAT} from './property-descriptors/float';
+import {DISPLAY, display} from './property-descriptors/display';
+import {duration} from './property-descriptors/duration';
+import {FLOAT, float} from './property-descriptors/float';
+import {fontFamily} from './property-descriptors/font-family';
+import {fontSize} from './property-descriptors/font-size';
+import {fontStyle} from './property-descriptors/font-style';
+import {fontVariant} from './property-descriptors/font-variant';
+import {fontWeight} from './property-descriptors/font-weight';
 import {letterSpacing} from './property-descriptors/letter-spacing';
 import {lineBreak} from './property-descriptors/line-break';
 import {lineHeight} from './property-descriptors/line-height';
@@ -42,46 +54,33 @@ import {listStylePosition} from './property-descriptors/list-style-position';
 import {listStyleType} from './property-descriptors/list-style-type';
 import {marginBottom, marginLeft, marginRight, marginTop} from './property-descriptors/margin';
 import {objectFit} from './property-descriptors/object-fit';
-import {overflow, OVERFLOW} from './property-descriptors/overflow';
+import {opacity} from './property-descriptors/opacity';
+import {OVERFLOW, overflow} from './property-descriptors/overflow';
 import {overflowWrap} from './property-descriptors/overflow-wrap';
 import {paddingBottom, paddingLeft, paddingRight, paddingTop} from './property-descriptors/padding';
+import {paintOrder} from './property-descriptors/paint-order';
+import {POSITION, position} from './property-descriptors/position';
+import {quotes} from './property-descriptors/quotes';
 import {textAlign} from './property-descriptors/text-align';
-import {position, POSITION} from './property-descriptors/position';
+import {textDecorationColor} from './property-descriptors/text-decoration-color';
+import {textDecorationLine} from './property-descriptors/text-decoration-line';
 import {textShadow} from './property-descriptors/text-shadow';
 import {textTransform} from './property-descriptors/text-transform';
 import {transform} from './property-descriptors/transform';
 import {transformOrigin} from './property-descriptors/transform-origin';
-import {visibility, VISIBILITY} from './property-descriptors/visibility';
-import {wordBreak} from './property-descriptors/word-break';
-import {zIndex} from './property-descriptors/z-index';
-import {CSSValue, isIdentToken, Parser} from './syntax/parser';
-import {Tokenizer} from './syntax/tokenizer';
-import {Color, color as colorType, isTransparent} from './types/color';
-import {angle} from './types/angle';
-import {image} from './types/image';
-import {time} from './types/time';
-import {opacity} from './property-descriptors/opacity';
-import {textDecorationColor} from './property-descriptors/text-decoration-color';
-import {textDecorationLine} from './property-descriptors/text-decoration-line';
-import {isLengthPercentage, LengthPercentage, ZERO_LENGTH} from './types/length-percentage';
-import {fontFamily} from './property-descriptors/font-family';
-import {fontSize} from './property-descriptors/font-size';
-import {isLength} from './types/length';
-import {fontWeight} from './property-descriptors/font-weight';
-import {fontVariant} from './property-descriptors/font-variant';
-import {fontStyle} from './property-descriptors/font-style';
-import {contains} from '../core/bitwise';
-import {content} from './property-descriptors/content';
-import {counterIncrement} from './property-descriptors/counter-increment';
-import {counterReset} from './property-descriptors/counter-reset';
-import {duration} from './property-descriptors/duration';
-import {quotes} from './property-descriptors/quotes';
-import {boxShadow} from './property-descriptors/box-shadow';
-import {paintOrder} from './property-descriptors/paint-order';
+import {VISIBILITY, visibility} from './property-descriptors/visibility';
 import {webkitTextStrokeColor} from './property-descriptors/webkit-text-stroke-color';
 import {webkitTextStrokeWidth} from './property-descriptors/webkit-text-stroke-width';
-import {Context} from '../core/context';
-import {objectFit} from './property-descriptors/object-fit';
+import {wordBreak} from './property-descriptors/word-break';
+import {zIndex} from './property-descriptors/z-index';
+import {CSSValue, Parser, isIdentToken} from './syntax/parser';
+import {Tokenizer} from './syntax/tokenizer';
+import {angle} from './types/angle';
+import {Color, color as colorType, isTransparent} from './types/color';
+import {image} from './types/image';
+import {isLength} from './types/length';
+import {LengthPercentage, ZERO_LENGTH, isLengthPercentage} from './types/length-percentage';
+import {time} from './types/time';
 
 export class CSSParsedDeclaration {
     animationDuration: ReturnType<typeof duration.parse>;
@@ -151,7 +150,6 @@ export class CSSParsedDeclaration {
     webkitTextStrokeWidth: ReturnType<typeof webkitTextStrokeWidth.parse>;
     wordBreak: ReturnType<typeof wordBreak.parse>;
     zIndex: ReturnType<typeof zIndex.parse>;
-    objectFit: ReturnType<typeof objectFit.parse>;
 
     constructor(context: Context, declaration: CSSStyleDeclaration) {
         this.animationDuration = parse(context, duration, declaration.animationDuration);
@@ -322,6 +320,5 @@ const parse = (context: Context, descriptor: CSSPropertyDescriptor<any>, style?:
                 case 'time':
                     return time.parse(context, parser.parseComponentValue());
             }
-            break;
     }
 };

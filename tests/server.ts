@@ -1,13 +1,13 @@
-import express from 'express';
 import cors from 'cors';
+import express from 'express';
+import filenamifyUrl from 'filenamify-url';
+import fs from 'fs';
+import proxy from 'html2canvas-proxy';
+import mkdirp from 'mkdirp';
 import path from 'path';
 import serveIndex from 'serve-index';
-import proxy from 'html2canvas-proxy';
 import yargs from 'yargs';
 import {ScreenshotRequest} from './types';
-import fs from 'fs';
-import filenamifyUrl from 'filenamify-url';
-import mkdirp from 'mkdirp';
 
 export const app = express();
 app.use('/', serveIndex(path.resolve(__dirname, '../'), {icons: true}));

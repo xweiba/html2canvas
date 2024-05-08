@@ -61,7 +61,7 @@ html2canvas(document.body).then(function (canvas) {
 
 ### Building
 
-You can download ready builds [here](https://github.com/niklasvh/html2canvas/releases).
+You can download ready builds [here](https://github.com/html2canvas/html2canvas/releases).
 
 Clone git repository:
 

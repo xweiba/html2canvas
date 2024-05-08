@@ -47,4 +47,3 @@ export class ForeignObjectRenderer extends Renderer {
         return this.canvas;
     }
 }
-

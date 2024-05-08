@@ -1,5 +1,5 @@
-import { Context } from '../../core/context';
-import { IPropertyIdentValueDescriptor, PropertyDescriptorParsingType } from '../IPropertyDescriptor';
+import {Context} from '../../core/context';
+import {IPropertyIdentValueDescriptor, PropertyDescriptorParsingType} from '../IPropertyDescriptor';
 export const enum OBJECT_FIT {
     FILL = 'fill',
     CONTAIN = 'contain',
