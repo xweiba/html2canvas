@@ -4,7 +4,6 @@ This project is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/htm
 
 [Homepage](https://html2canvas.github.io/html2canvas) | [Downloads](https://github.com/html2canvas/html2canvas/releases) | [Questions](https://github.com/html2canvas/html2canvas/discussions/categories/q-a)
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/niklasvh/html2canvas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 ![CI](https://github.com/html2canvas/html2canvas/workflows/CI/badge.svg?branch=master)
 [![NPM Downloads](https://img.shields.io/npm/dm/@html2canvas/html2canvas.svg)](https://www.npmjs.org/package/@html2canvas/html2canvas)
 [![NPM Version](https://img.shields.io/npm/v/@html2canvas/html2canvas.svg)](https://www.npmjs.org/package/@html2canvas/html2canvas)
@@ -57,6 +56,17 @@ The function returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/Ja
 html2canvas(document.body).then(function (canvas) {
     document.body.appendChild(canvas);
 });
+```
+or
+```js
+html2canvas(document.body).then(canvas => {
+    document.body.appendChild(canvas);
+});
+```
+or
+```js
+const canvas = await html2canvas(document.body)
+document.body.appendChild(canvas);
 ```
 
 ### Building
