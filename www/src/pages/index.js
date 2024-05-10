@@ -1,9 +1,8 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import logo from '../images/logo_icon.svg';
-import Layout from '../components/layout';
-import Footer from '../components/footer';
 import Carbon from '../components/carbon';
+import Footer from '../components/footer';
+import Layout from '../components/layout';
+import logo from '../images/logo_icon.svg';
 
 const codeStyle = {
     backgroundColor: '#7cb342',
@@ -195,7 +194,7 @@ export default ({data}) => {
                                 <div css={{height: '35px'}}>
                                     <iframe
                                         title="Github"
-                                        src="https://ghbtns.com/github-btn.html?user=wtto00&repo=html2canvas&type=fork&count=true&size=large"
+                                        src="https://ghbtns.com/github-btn.html?user=html2canvas&repo=html2canvas&type=fork&count=true&size=large"
                                         frameBorder="0"
                                         scrolling="0"
                                         width="160px"
