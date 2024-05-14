@@ -1,17 +1,13 @@
 {
   "title": "html2canvas",
-  "name": "html2canvas",
+  "name": "@fbsanchez/html2canvas",
   "description": "Screenshots with JavaScript",
   "main": "dist/html2canvas.js",
   "module": "dist/html2canvas.esm.js",
   "typings": "dist/types/index.d.ts",
   "browser": "dist/html2canvas.js",
-  "version": "1.4.2",
-  "author": {
-    "name": "Niklas von Hertzen",
-    "email": "niklasvh@gmail.com",
-    "url": "https://hertzen.com"
-  },
+  "version": "1.4.3",
+  "author": "Niklas von Hertzen <niklasvh@gmail.com> (https://hertzen.com)",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -120,5 +116,14 @@
   "dependencies": {
     "css-line-break": "^2.1.0",
     "text-segmentation": "^1.0.3"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "keywords": [
+    "html2canvas",
+    "screenshot"
+  ]
 }
