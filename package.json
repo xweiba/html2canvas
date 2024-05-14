@@ -1,6 +1,6 @@
 {
-  "title": "html2canvas",
-  "name": "@fbsanchez/html2canvas",
+  "title": "html2canvas-lch",
+  "name": "html2canvas-lch",
   "description": "Screenshots with JavaScript",
   "main": "dist/html2canvas.js",
   "module": "dist/html2canvas.esm.js",
@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:niklasvh/html2canvas.git"
+    "url": "git+ssh://git@github.com/fbsanchez/html2canvas.git"
   },
   "bugs": {
-    "url": "https://github.com/niklasvh/html2canvas/issues"
+    "url": "https://github.com/fbsanchez/html2canvas/issues"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
