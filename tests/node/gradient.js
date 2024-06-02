@@ -11,64 +11,37 @@ describe('Gradient', () => {
         });
 
         it('circle, white, black', () => {
-            assert.equal(
-                Gradient.transformWebkitRadialGradientArgs(['circle', 'white', 'black'])[0],
-                'circle'
-            );
+            assert.equal(Gradient.transformWebkitRadialGradientArgs(['circle', 'white', 'black'])[0], 'circle');
         });
 
         it('10% 30%, white, black', () => {
-            assert.equal(
-                Gradient.transformWebkitRadialGradientArgs(['10% 30%', 'white', 'black'])[0],
-                '10% 30%'
-            );
+            assert.equal(Gradient.transformWebkitRadialGradientArgs(['10% 30%', 'white', 'black'])[0], '10% 30%');
         });
 
         it('30% 30%, closest-corner, white, black', () => {
             assert.equal(
-                Gradient.transformWebkitRadialGradientArgs([
-                    '30% 30%',
-                    'closest-corner',
-                    'white',
-                    'black'
-                ])[0],
+                Gradient.transformWebkitRadialGradientArgs(['30% 30%', 'closest-corner', 'white', 'black'])[0],
                 'closest-corner at 30% 30%'
             );
         });
 
         it('30% 30%, circle closest-corner, white, black', () => {
             assert.equal(
-                Gradient.transformWebkitRadialGradientArgs([
-                    '30% 30%',
-                    'circle closest-corner',
-                    'white',
-                    'black'
-                ])[0],
+                Gradient.transformWebkitRadialGradientArgs(['30% 30%', 'circle closest-corner', 'white', 'black'])[0],
                 'circle closest-corner at 30% 30%'
             );
         });
 
         it('center, 5em 40px, white, black', () => {
             assert.equal(
-                Gradient.transformWebkitRadialGradientArgs([
-                    'center',
-                    '5em 40px',
-                    'white',
-                    'black'
-                ])[0],
+                Gradient.transformWebkitRadialGradientArgs(['center', '5em 40px', 'white', 'black'])[0],
                 '5em 40px at center'
             );
         });
 
         it('45 45, 10, 52 50, 30, from(#A7D30C), to(red)', () => {
             assert.equal(
-                Gradient.transformWebkitRadialGradientArgs([
-                    '45 45',
-                    '10',
-                    '52 50',
-                    '30',
-                    'from(#A7D30C)'
-                ])[0],
+                Gradient.transformWebkitRadialGradientArgs(['45 45', '10', '52 50', '30', 'from(#A7D30C)'])[0],
                 '30px at 52px 50px'
             );
         });

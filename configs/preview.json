@@ -1,10 +1,5 @@
 {
     "extends": "./base",
-    "include": [
-        "../www/src/preview.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+    "include": ["../www/src/preview.ts"],
+    "exclude": ["node_modules"]
 }
-

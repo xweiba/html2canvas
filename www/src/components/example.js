@@ -32,7 +32,7 @@ class CanvasContainer extends Component {
                     width: '100%',
                     height: '100%'
                 }}
-                ref={container => (this.container = container)}
+                ref={(container) => (this.container = container)}
                 onClick={() => this.props.onClose()}
             >
                 <img
@@ -54,12 +54,9 @@ export default class Example extends Component {
     render() {
         return (
             <div data-html2canvas-ignore>
-                {this.state.canvas
-                    ? <CanvasContainer
-                          canvas={this.state.canvas}
-                          onClose={() => this.setState({canvas: null})}
-                      />
-                    : null}
+                {this.state.canvas ? (
+                    <CanvasContainer canvas={this.state.canvas} onClose={() => this.setState({canvas: null})} />
+                ) : null}
                 <div
                     css={{
                         width: '800px',
@@ -156,8 +153,7 @@ export default class Example extends Component {
                         >
                             <h4>Try out html2canvas</h4>
                             <p css={{color: '#fff'}}>
-                                Test out html2canvas by rendering the viewport from the current
-                                page.
+                                Test out html2canvas by rendering the viewport from the current page.
                             </p>
                             <div
                                 css={{
@@ -178,7 +174,7 @@ export default class Example extends Component {
                                         x: window.pageXOffset,
                                         y: window.pageYOffset
                                     })
-                                        .then(canvas => {
+                                        .then((canvas) => {
                                             this.setState({canvas});
 
                                             canvas.style.position = 'fixed';
@@ -190,7 +186,7 @@ export default class Example extends Component {
                                             canvas.style.transition =
                                                 'transform 0.3s cubic-bezier(0.42, 0, 0.58, 1),opacity 0.3s cubic-bezier(0.42, 0, 0.58, 1),-webkit-transform 0.3s cubic-bezier(0.42, 0, 0.58, 1)';
                                         })
-                                        .catch(e => {
+                                        .catch((e) => {
                                             console.log(e);
                                         });
                                 }}

@@ -9,7 +9,7 @@ const port = 9876;
 
 const log = require('karma/lib/logger').create('launcher:MobileSafari');
 
-module.exports = function(config) {
+module.exports = function (config) {
     // https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md
     const launchers = {
         Safari_IOS_9: {
@@ -83,7 +83,7 @@ module.exports = function(config) {
             browserName: 'Browser',
             platform: 'Android',
             version: '4.4',
-            device: 'Android Emulator',
+            device: 'Android Emulator'
         },
         SauceLabs_iOS10_3: {
             base: 'SauceLabs',
@@ -126,20 +126,22 @@ module.exports = function(config) {
 
     const ciLauncher = launchers[process.env.TARGET_BROWSER];
 
-    const customLaunchers = ciLauncher ? {target_browser: ciLauncher} : {
-        Puppeteer_Chrome: {
-            base: 'Puppeteer',
-            flags: ['--no-sandbox']
-        },
-        stable_chrome: {
-            base: 'ChromeHeadless'
-        },
-        stable_firefox: {
-            base: 'Firefox'
-        }
-    };
+    const customLaunchers = ciLauncher
+        ? {target_browser: ciLauncher}
+        : {
+              Puppeteer_Chrome: {
+                  base: 'Puppeteer',
+                  flags: ['--no-sandbox']
+              },
+              stable_chrome: {
+                  base: 'ChromeHeadless'
+              },
+              stable_firefox: {
+                  base: 'Firefox'
+              }
+          };
 
-    const injectTypedArrayPolyfills = function(files) {
+    const injectTypedArrayPolyfills = function (files) {
         files.unshift({
             pattern: path.resolve(__dirname, './node_modules/js-polyfills/typedarray.js'),
             included: true,
@@ -150,54 +152,58 @@ module.exports = function(config) {
 
     injectTypedArrayPolyfills.$inject = ['config.files'];
 
-    const MobileSafari = function(baseBrowserDecorator, args) {
-        if(process.platform !== "darwin"){
-            log.error("This launcher only works in MacOS.");
+    const MobileSafari = function (baseBrowserDecorator, args) {
+        if (process.platform !== 'darwin') {
+            log.error('This launcher only works in MacOS.');
             this._process.kill();
             return;
         }
         baseBrowserDecorator(this);
-        this.on('start', url => {
-            simctl.getDevices(args.sdk, args.platform).then(devices => {
-                const d = devices.find(d => {
-                    return d.name === args.name;
-                });
-
-                if (!d) {
-                    log.error(`No device found for sdk ${args.sdk} with name ${args.name}`);
-                    log.info(`Available devices:`, devices);
-                    this._process.kill();
-                    return;
-                }
-
-                return iosSimulator.getSimulator(d.udid).then(device => {
-                    return simctl.bootDevice(d.udid).then(() => device);
-                }).then(device => {
-                    return device.waitForBoot(60 * 5 * 1000).then(() => {
-                        return device.openUrl(url);
+        this.on('start', (url) => {
+            simctl
+                .getDevices(args.sdk, args.platform)
+                .then((devices) => {
+                    const d = devices.find((d) => {
+                        return d.name === args.name;
                     });
+
+                    if (!d) {
+                        log.error(`No device found for sdk ${args.sdk} with name ${args.name}`);
+                        log.info(`Available devices:`, devices);
+                        this._process.kill();
+                        return;
+                    }
+
+                    return iosSimulator
+                        .getSimulator(d.udid)
+                        .then((device) => {
+                            return simctl.bootDevice(d.udid).then(() => device);
+                        })
+                        .then((device) => {
+                            return device.waitForBoot(60 * 5 * 1000).then(() => {
+                                return device.openUrl(url);
+                            });
+                        });
+                })
+                .catch((e) => {
+                    console.log('err,', e);
                 });
-            }).catch(e => {
-                console.log('err,', e);
-            });
         });
     };
 
     MobileSafari.prototype = {
         name: 'MobileSafari',
         DEFAULT_CMD: {
-            darwin: '/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator',
+            darwin: '/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator'
         },
-        ENV_CMD: null,
+        ENV_CMD: null
     };
 
     MobileSafari.$inject = ['baseBrowserDecorator', 'args'];
 
     config.set({
-
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
-
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -206,9 +212,9 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             'build/testrunner.js',
-            { pattern: './tests/**/*', 'watched': true, 'included': false, 'served': true},
-            { pattern: './dist/**/*', 'watched': true, 'included': false, 'served': true},
-            { pattern: './node_modules/**/*', 'watched': true, 'included': false, 'served': true},
+            {pattern: './tests/**/*', watched: true, included: false, served: true},
+            {pattern: './dist/**/*', watched: true, included: false, served: true},
+            {pattern: './node_modules/**/*', watched: true, included: false, served: true}
         ],
 
         plugins: [
@@ -219,15 +225,11 @@ module.exports = function(config) {
         ],
 
         // list of files to exclude
-        exclude: [
-        ],
-
+        exclude: [],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {
-        },
-
+        preprocessors: {},
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
@@ -244,24 +246,19 @@ module.exports = function(config) {
         // web server port
         port,
 
-
         // enable / disable colors in the output (reporters and logs)
         colors: true,
-
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_INFO,
 
-
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
-
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: Object.keys(customLaunchers),
-
 
         customLaunchers,
 
@@ -285,5 +282,5 @@ module.exports = function(config) {
         browserDisconnectTimeout: 60000,
 
         browserNoActivityTimeout: 1200000
-    })
+    });
 };

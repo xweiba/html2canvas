@@ -1,10 +1,5 @@
 {
     "extends": "./base",
-    "include": [
-        "scripts/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+    "include": ["scripts/**/*.ts"],
+    "exclude": ["node_modules"]
 }
-

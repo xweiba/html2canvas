@@ -7,7 +7,7 @@ import * as path from 'path';
 const karmaTestRunner = () =>
     new Promise((resolve, reject) => {
         const karmaConfig = KarmaConfig.parseConfig(path.resolve(__dirname, '../karma.conf.js'), {});
-        const server = new KarmaServer(karmaConfig, exitCode => {
+        const server = new KarmaServer(karmaConfig, (exitCode) => {
             if (exitCode > 0) {
                 reject(`Karma has exited with ${exitCode}`);
             } else {

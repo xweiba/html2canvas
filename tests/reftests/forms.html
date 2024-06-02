@@ -1,14 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <title>Form tests</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <script type="text/javascript" src="../test.js"></script>
         <style>
-            body, html {
+            body,
+            html {
                 margin: 0;
             }
-            input[type="radio"], input[type="checkbox"] {
+            input[type='radio'],
+            input[type='checkbox'] {
                 margin: 10px;
                 display: inline-block;
                 height: 20px;
@@ -17,7 +19,14 @@
                 font-size: 10px;
                 vertical-align: top;
             }
-            input[type="text"], input[type="password"], input[type="submit"], input[type="reset"], input[type="button"], button, textarea, select {
+            input[type='text'],
+            input[type='password'],
+            input[type='submit'],
+            input[type='reset'],
+            input[type='button'],
+            button,
+            textarea,
+            select {
                 height: 20px;
                 padding: 2px;
                 border-width: 2px;
@@ -29,31 +38,31 @@
                 color: #000;
             }
         </style>
-
     </head>
     <body>
         <input type="hidden" value="THIS SHOULD NOT BE VISIBLE!" />
         <input type="text" value="textbox" />
         <input type="password" value="textbox" />
-        <input type="text" value="textbox" style="border:5px solid navy;" />
-        <input type="text" value="textbox with very long text that overflows" style="border:5px solid navy;height:40px;" />
+        <input type="text" value="textbox" style="border: 5px solid navy" />
+        <input
+            type="text"
+            value="textbox with very long text that overflows"
+            style="border: 5px solid navy; height: 40px"
+        />
 
-        <input type="text" value="textbox" style="border:5px solid navy;height:40px;padding:10px;" />
+        <input type="text" value="textbox" style="border: 5px solid navy; height: 40px; padding: 10px" />
 
-        <input type="text" value="textbox" style="padding:10px;" />
-        <input type="text" value="textbox" style="padding:10px;text-align:right;" />
+        <input type="text" value="textbox" style="padding: 10px" />
+        <input type="text" value="textbox" style="padding: 10px; text-align: right" />
         <select>
             <option value="1">Value 1</option>
             <option value="2">Value 2</option>
             <option value="3">Value 3</option>
         </select>
-        <select>
-
-        </select>
+        <select></select>
         <select>
             <option value="">2</option>
         </select>
-
 
         <select>
             <option value="1">Value 1</option>
@@ -64,33 +73,39 @@
         <input type="Button" value="Button" />
         <input type="Reset" value="Reset" />
 
+        <input type="submit" value="Submit" style="width: 200px" />
+        <input type="Button" value="Button" style="width: 200px; height: 50px" />
+        <input type="Reset" value="Reset" style="width: 200px; height: 50px; text-align: left" />
 
-        <input type="submit" value="Submit" style="width:200px;" />
-        <input type="Button" value="Button" style="width:200px;height:50px;"  />
-        <input type="Reset" value="Reset" style="width:200px;height:50px;text-align:left;"  />
+        <textarea> </textarea>
+        <textarea style="border-width: 10px"></textarea>
 
-
-        <textarea>  </textarea>
-        <textarea style="border-width:10px;"></textarea>
-
-                <textarea> text </textarea>
-        <textarea style="border-width:10px;">text</textarea>
+        <textarea> text </textarea>
+        <textarea style="border-width: 10px">text</textarea>
         <input type="radio" value="radio1" />
-        <input type="radio" value="radio2" style="transform:scale(3)" />
+        <input type="radio" value="radio2" style="transform: scale(3)" />
         <input type="RADIO" value="radio3" checked />
-        <input type="radio" value="radio4" style="transform:scale(3)" checked />
-        <input type="radio" value="radio5" style="transform:scale(3); background: red;" />
-        <input type="radio" value="radio6" style="width: 200px;" />
-        <input type="radio" value="radio6" style="width: 200px; height: 200px;" />
-        <input type="radio" value="radio6" style="width: 200px; height: 200px;" checked />
+        <input type="radio" value="radio4" style="transform: scale(3)" checked />
+        <input type="radio" value="radio5" style="transform: scale(3); background: red" />
+        <input type="radio" value="radio6" style="width: 200px" />
+        <input type="radio" value="radio6" style="width: 200px; height: 200px" />
+        <input type="radio" value="radio6" style="width: 200px; height: 200px" checked />
         <input type="checkbox" value="checkbox1" />
-        <input type="chECKbox" value="checkbox2" style="transform:scale(3)" />
+        <input type="chECKbox" value="checkbox2" style="transform: scale(3)" />
         <input type="checkbox" value="checkbox3" checked />
-        <input type="checkbox" value="checkbox4" style="transform:scale(3)" checked />
-        <input type="checkbox" value="checkbox5" style="transform:scale(3); background: red;" />
-        <input type="checkbox" value="checkbox6" style="width: 200px;" />
-        <input type="checkbox" value="checkbox6" style="width: 200px; height: 200px;" />
-        <input type="checkbox" value="checkbox6" style="width: 200px; height: 200px;" checked />
-        <div style="width: 10px; height: 10px; border:1px solid rgb(165,165,165); border-radius: 3px; background: rgb(222,222,222)"></div>
+        <input type="checkbox" value="checkbox4" style="transform: scale(3)" checked />
+        <input type="checkbox" value="checkbox5" style="transform: scale(3); background: red" />
+        <input type="checkbox" value="checkbox6" style="width: 200px" />
+        <input type="checkbox" value="checkbox6" style="width: 200px; height: 200px" />
+        <input type="checkbox" value="checkbox6" style="width: 200px; height: 200px" checked />
+        <div
+            style="
+                width: 10px;
+                height: 10px;
+                border: 1px solid rgb(165, 165, 165);
+                border-radius: 3px;
+                background: rgb(222, 222, 222);
+            "
+        ></div>
     </body>
 </html>

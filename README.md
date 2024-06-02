@@ -57,15 +57,19 @@ html2canvas(document.body).then(function (canvas) {
     document.body.appendChild(canvas);
 });
 ```
+
 or
+
 ```js
-html2canvas(document.body).then(canvas => {
+html2canvas(document.body).then((canvas) => {
     document.body.appendChild(canvas);
 });
 ```
+
 or
+
 ```js
-const canvas = await html2canvas(document.body)
+const canvas = await html2canvas(document.body);
 document.body.appendChild(canvas);
 ```
 

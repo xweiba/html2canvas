@@ -11,19 +11,19 @@ All notable changes to this project will be documented in this file. See [standa
 ### feat
 
 -   Add support for css style `object-fit` of `<img>` elements ([627dbac84](https://github.com/html2canvas/html2canvas/commit/627dbac84336d60f614131fee698af8e6028a085))
--   Accept "normal" value for style.content  ([a70cd49c3](https://github.com/html2canvas/html2canvas/commit/a70cd49c3434ec1ca47fe1427c3680f2df62aa1f))
+-   Accept "normal" value for style.content ([a70cd49c3](https://github.com/html2canvas/html2canvas/commit/a70cd49c3434ec1ca47fe1427c3680f2df62aa1f))
 -   Update canvas-renderer.ts to fix Vertical alignment issues with text ([ad65ffb6](https://github.com/html2canvas/html2canvas/commit/ad65ffb6ae8faf20220fef7cb886d846fb24142d))
 
 ### fix
 
 -   Text alignment issues ([9db98f52](https://github.com/html2canvas/html2canvas/commit/9db98f529de8196f9b25da242b6468596416cb18))
 -   The rendering order of transform and clip effects ([18bef2f](https://github.com/html2canvas/html2canvas/commit/18bef2fb84f66f22c2522bce7ef2070d1c9c5c00))
--   On Safari, the object-fit property for SVG images is not effective.  ([55bfd47f](https://github.com/html2canvas/html2canvas/commit/55bfd47f2a1da39d715773cc06e09ae690118ab2))
+-   On Safari, the object-fit property for SVG images is not effective. ([55bfd47f](https://github.com/html2canvas/html2canvas/commit/55bfd47f2a1da39d715773cc06e09ae690118ab2))
 -   Replace deprecated String.prototype.substr() ([d83ba946](https://github.com/html2canvas/html2canvas/commit/d83ba9469882f828538c325077d8128a2b422707))
 -   add <base> to fix relative error in iframe ([4e6c022b](https://github.com/html2canvas/html2canvas/commit/4e6c022b3edd5a591f7d8ff6784d7bec9458609b))
 -   Avoid duplicate enum value of LIST_STYLE_TYPE ([fbab3ccf](https://github.com/html2canvas/html2canvas/commit/fbab3ccf5da04010c279690b174b648cf0f38516))
 -   Resolve that box shadow cannot be displayed without inset attribute,and No blur effect when blur radius is set ([a6651e38](https://github.com/html2canvas/html2canvas/commit/a6651e38a2a0bf2f6f163c87dc61d857f3f5e3df))
--   Set the document clone iframe container's size via the style attribute  ([9855c6c4](https://github.com/html2canvas/html2canvas/commit/9855c6c4f24607254a3e71b50508eebf27b19e70))
+-   Set the document clone iframe container's size via the style attribute ([9855c6c4](https://github.com/html2canvas/html2canvas/commit/9855c6c4f24607254a3e71b50508eebf27b19e70))
 -   "Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true" warning in chrome browser ([1a7839db](https://github.com/html2canvas/html2canvas/commit/1a7839dbb613912fad93111bfa41a1e462815c15))
 -   Resolve that box shadow cannot be displayed without inset attribute,and No blur effect when blur radius is set ([a6651e38](https://github.com/html2canvas/html2canvas/commit/a6651e38a2a0bf2f6f163c87dc61d857f3f5e3df))
 -   fix: renderBackgroundImage lineLength ([34bee729](https://github.com/html2canvas/html2canvas/commit/34bee729674fe63e2e2a1c392a663f2761b07286))

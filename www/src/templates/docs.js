@@ -71,105 +71,102 @@ export default ({data}) => {
                         flexGrow: 1
                     }}
                 >
-                    <div
-                        css={{width: '85%', margin: '0 auto'}}
-                        dangerouslySetInnerHTML={{__html: post.html}}
-                    />
+                    <div css={{width: '85%', margin: '0 auto'}} dangerouslySetInnerHTML={{__html: post.html}} />
                 </div>
                 {(post.frontmatter.previousUrl && post.frontmatter.previousTitle) ||
-                (post.frontmatter.nextUrl && post.frontmatter.nextTitle)
-                    ? <div
-                          css={{
-                              backgroundColor: '#7cb342',
-                              marginTop: '30px'
-                          }}
-                      >
-                          <div
-                              css={{
-                                  width: '85%',
-                                  display: 'flex',
-                                  margin: '0 auto',
-                                  alignItems: 'center',
-                                  height: '96px'
-                              }}
-                          >
-                              {post.frontmatter.previousUrl && post.frontmatter.previousTitle
-                                  ? <Link
-                                        to={post.frontmatter.previousUrl}
-                                        css={{
-                                            flex: 1,
-                                            color: '#fff',
-                                            display: 'flex',
-                                            alignItems: 'flex-end'
-                                        }}
-                                    >
-                                        <div css={{height: '24px'}}>
-                                            <img src={back} alt="" />
+                (post.frontmatter.nextUrl && post.frontmatter.nextTitle) ? (
+                    <div
+                        css={{
+                            backgroundColor: '#7cb342',
+                            marginTop: '30px'
+                        }}
+                    >
+                        <div
+                            css={{
+                                width: '85%',
+                                display: 'flex',
+                                margin: '0 auto',
+                                alignItems: 'center',
+                                height: '96px'
+                            }}
+                        >
+                            {post.frontmatter.previousUrl && post.frontmatter.previousTitle ? (
+                                <Link
+                                    to={post.frontmatter.previousUrl}
+                                    css={{
+                                        flex: 1,
+                                        color: '#fff',
+                                        display: 'flex',
+                                        alignItems: 'flex-end'
+                                    }}
+                                >
+                                    <div css={{height: '24px'}}>
+                                        <img src={back} alt="" />
+                                    </div>
+                                    <div>
+                                        <span
+                                            css={{
+                                                display: 'block',
+                                                color: 'rgba(255,255,255,.55)',
+                                                fontSize: '15px',
+                                                lineHeight: '18px',
+                                                marginBottom: '1px'
+                                            }}
+                                        >
+                                            Previous
+                                        </span>
+                                        <div
+                                            css={{
+                                                color: 'rgba(255,255,255,.87)',
+                                                fontSize: '20px'
+                                            }}
+                                        >
+                                            {post.frontmatter.previousTitle}
                                         </div>
-                                        <div>
-                                            <span
-                                                css={{
-                                                    display: 'block',
-                                                    color: 'rgba(255,255,255,.55)',
-                                                    fontSize: '15px',
-                                                    lineHeight: '18px',
-                                                    marginBottom: '1px'
-                                                }}
-                                            >
-                                                Previous
-                                            </span>
-                                            <div
-                                                css={{
-                                                    color: 'rgba(255,255,255,.87)',
-                                                    fontSize: '20px'
-                                                }}
-                                            >
-                                                {post.frontmatter.previousTitle}
-                                            </div>
+                                    </div>
+                                </Link>
+                            ) : null}
+                            {post.frontmatter.nextUrl && post.frontmatter.nextTitle ? (
+                                <Link
+                                    to={post.frontmatter.nextUrl}
+                                    css={{
+                                        flex: 1,
+                                        color: '#fff',
+                                        justifyContent: 'flex-end',
+                                        display: 'flex',
+                                        alignItems: 'flex-end'
+                                    }}
+                                >
+                                    <div>
+                                        <span
+                                            css={{
+                                                display: 'block',
+                                                color: 'rgba(255,255,255,.55)',
+                                                fontSize: '15px',
+                                                lineHeight: '18px',
+                                                marginBottom: '1px'
+                                            }}
+                                        >
+                                            Next
+                                        </span>
+                                        <div
+                                            css={{
+                                                color: 'rgba(255,255,255,.87)',
+                                                fontSize: '20px'
+                                            }}
+                                        >
+                                            {post.frontmatter.nextTitle}
                                         </div>
-                                    </Link>
-                                  : null}
-                              {post.frontmatter.nextUrl && post.frontmatter.nextTitle
-                                  ? <Link
-                                        to={post.frontmatter.nextUrl}
-                                        css={{
-                                            flex: 1,
-                                            color: '#fff',
-                                            justifyContent: 'flex-end',
-                                            display: 'flex',
-                                            alignItems: 'flex-end'
-                                        }}
-                                    >
-                                        <div>
-                                            <span
-                                                css={{
-                                                    display: 'block',
-                                                    color: 'rgba(255,255,255,.55)',
-                                                    fontSize: '15px',
-                                                    lineHeight: '18px',
-                                                    marginBottom: '1px'
-                                                }}
-                                            >
-                                                Next
-                                            </span>
-                                            <div
-                                                css={{
-                                                    color: 'rgba(255,255,255,.87)',
-                                                    fontSize: '20px'
-                                                }}
-                                            >
-                                                {post.frontmatter.nextTitle}
-                                            </div>
-                                        </div>
+                                    </div>
 
-                                        <div css={{height: '24px'}}>
-                                            <img src={next} alt="" />
-                                        </div>
-                                    </Link>
-                                  : null}
-                          </div>
-                      </div>
-                    : null}
+                                    <div css={{height: '24px'}}>
+                                        <img src={next} alt="" />
+                                    </div>
+                                </Link>
+                            ) : null}
+                        </div>
+                    </div>
+                ) : null}
                 <Footer css={{marginLeft: '300px'}} />
             </div>
         </Layout>

@@ -13,8 +13,8 @@ app.use('/', express.static(path.resolve(__dirname, '../')));
 const listener = app.listen(0, async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    const address = listener.address()
-    const port = typeof address === 'string' ? `:${address}` : !address ? '' : `:${address.port}`
+    const address = listener.address();
+    const port = typeof address === 'string' ? `:${address}` : !address ? '' : `:${address.port}`;
 
     for (const filename of Object.keys(reftests.testList)) {
         await page.goto(`http://localhost${port}${filename}?reftest&run=false`);
@@ -27,10 +27,7 @@ const listener = app.listen(0, async () => {
                 target: new RefTestRenderer()
             });
         });
-        fs.writeFileSync(
-            path.resolve(__dirname, `..${filename.replace(/\.html$/i, '.txt')}`),
-            reftest
-        );
+        fs.writeFileSync(path.resolve(__dirname, `..${filename.replace(/\.html$/i, '.txt')}`), reftest);
     }
 
     await browser.close();

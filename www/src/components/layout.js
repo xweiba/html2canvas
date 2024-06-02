@@ -4,11 +4,12 @@ import './layout.css';
 import Example from '../components/example';
 
 require('prismjs/themes/prism-solarizedlight.css');
-const TemplateWrapper = ({children}) =>
+const TemplateWrapper = ({children}) => (
     <div>
         <Helmet title="html2canvas - Screenshots with JavaScript" />
         {children}
         <Example />
-    </div>;
+    </div>
+);
 
 export default TemplateWrapper;

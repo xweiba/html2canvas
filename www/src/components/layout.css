@@ -1,5 +1,5 @@
 p {
-    color: rgba(0,0,0,0.71);
+    color: rgba(0, 0, 0, 0.71);
     padding: 0;
     -webkit-font-smoothing: antialiased;
 }
@@ -13,18 +13,18 @@ h1 {
 h4 {
     font-size: 2.28rem;
     line-height: 110%;
-    margin: 1.14rem 0 .912rem 0;
+    margin: 1.14rem 0 0.912rem 0;
 }
 
 h5 {
     font-size: 1.28rem;
     line-height: 110%;
-    margin: 1.14rem 0 .912rem 0;
+    margin: 1.14rem 0 0.912rem 0;
 }
 
 h6 {
     line-height: 110%;
-    margin: 1.14rem 0 .912rem 0;
+    margin: 1.14rem 0 0.912rem 0;
 }
 
 a {
@@ -50,15 +50,16 @@ td {
     padding: 8px;
 }
 
-th:first-child, td:first-child {
+th:first-child,
+td:first-child {
     padding-left: 8px;
 }
 
 :not(pre) > code {
-    padding: .1em .25em;
-    border: solid 1px rgba(51,51,51,0.12);
+    padding: 0.1em 0.25em;
+    border: solid 1px rgba(51, 51, 51, 0.12);
     background: #f5f2f0;
-    border-radius: .3em;
+    border-radius: 0.3em;
     color: black;
     font-family: 'Inconsolata', Monaco, Consolas, 'Andale Mono', monospace;
     direction: ltr;
@@ -67,7 +68,6 @@ th:first-child, td:first-child {
     word-spacing: normal;
     word-break: normal;
     line-height: 1.4;
-
 }
 
 blockquote {
@@ -78,12 +78,10 @@ blockquote {
     border-left-width: 5px;
     border-radius: 3px;
     border-left-color: #558b2f;
-
 }
 
 blockquote p {
     padding: 0;
-
 }
 
 * {

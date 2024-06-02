@@ -3,7 +3,7 @@ var CI = window.location.search.indexOf('selenium') !== -1;
 var AUTORUN = window.location.search.indexOf('run=false') === -1;
 var REFTEST = window.location.search.indexOf('reftest') !== -1;
 
-(function(document, window) {
+(function (document, window) {
     function appendScript(src) {
         document.write(
             '<script type="text/javascript" src="' +
@@ -18,30 +18,27 @@ var REFTEST = window.location.search.indexOf('reftest') !== -1;
     }
 
     (typeof Promise === 'undefined' ? ['/node_modules/es6-promise/dist/es6-promise.auto.min'] : [])
-        .concat([
-            '/node_modules/jquery/dist/jquery.min',
-            '/dist/html2canvas'
-        ])
+        .concat(['/node_modules/jquery/dist/jquery.min', '/dist/html2canvas'])
         .forEach(appendScript);
 
-    window.addEventListener("unhandledrejection", function(event) {
+    window.addEventListener('unhandledrejection', function (event) {
         console.info('UNHANDLED PROMISE REJECTION:', event);
     });
 
-    window.onload = function() {
-        (function($) {
-            $.fn.html2canvas = function(options) {
+    window.onload = function () {
+        (function ($) {
+            $.fn.html2canvas = function (options) {
                 var date = new Date(),
                     $message = null,
                     timeoutTimer = false,
                     timer = date.getTime();
                 options = options || {};
                 var promise = html2canvas(this[0], options);
-                promise['catch'](function(err) {
+                promise['catch'](function (err) {
                     console.log('html2canvas threw an error', err);
                 });
 
-                promise.then(function(canvas) {
+                promise.then(function (canvas) {
                     var $canvas = $(canvas),
                         finishTime = new Date();
 
@@ -55,34 +52,19 @@ var REFTEST = window.location.search.indexOf('reftest') !== -1;
                         .appendTo(document.body);
                     if (!CI) {
                         $canvas.siblings().toggle();
-                        $(window).click(function(event) {
+                        $(window).click(function (event) {
                             if (event.button === 0) {
                                 var scrollTop = $(window).scrollTop();
                                 $canvas.toggle().siblings().toggle();
-                                $(document.documentElement).css(
-                                    'background',
-                                    $canvas.is(':visible') ? 'none' : ''
-                                );
-                                $(document.body).css(
-                                    'background',
-                                    $canvas.is(':visible') ? 'none' : ''
-                                );
-                                throwMessage(
-                                    'Canvas Render ' +
-                                        ($canvas.is(':visible') ? 'visible' : 'hidden')
-                                );
+                                $(document.documentElement).css('background', $canvas.is(':visible') ? 'none' : '');
+                                $(document.body).css('background', $canvas.is(':visible') ? 'none' : '');
+                                throwMessage('Canvas Render ' + ($canvas.is(':visible') ? 'visible' : 'hidden'));
                                 $(window).scrollTop(scrollTop);
                             }
                         });
-                        $(document.documentElement).css(
-                            'background',
-                            $canvas.is(':visible') ? 'none' : ''
-                        );
+                        $(document.documentElement).css('background', $canvas.is(':visible') ? 'none' : '');
                         $(document.body).css('background', $canvas.is(':visible') ? 'none' : '');
-                        throwMessage(
-                            'Screenshot created in ' + (finishTime.getTime() - timer) + ' ms<br />',
-                            4000
-                        );
+                        throwMessage('Screenshot created in ' + (finishTime.getTime() - timer) + ' ms<br />', 4000);
                     } else {
                         $canvas.css('display', 'none');
                     }
@@ -99,8 +81,8 @@ var REFTEST = window.location.search.indexOf('reftest') !== -1;
 
                 function throwMessage(msg, duration) {
                     window.clearTimeout(timeoutTimer);
-                    timeoutTimer = window.setTimeout(function() {
-                        $message.fadeOut(function() {
+                    timeoutTimer = window.setTimeout(function () {
+                        $message.fadeOut(function () {
                             $message.remove();
                             $message = null;
                         });
@@ -138,7 +120,7 @@ var REFTEST = window.location.search.indexOf('reftest') !== -1;
             window.setUp();
         }
 
-        window.run = function() {
+        window.run = function () {
             $(h2cSelector).html2canvas(
                 $.extend(
                     {

@@ -6,8 +6,7 @@ export default class Carbon extends Component {
         if (this.container) {
             const script = document.createElement('script');
 
-            script.src =
-                '//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=html2canvashertzencom';
+            script.src = '//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=html2canvashertzencom';
             script.async = true;
             script.id = '_carbonads_js';
             this.container.appendChild(script);
@@ -18,7 +17,7 @@ export default class Carbon extends Component {
         return (
             <div
                 {...this.props}
-                ref={container => {
+                ref={(container) => {
                     this.container = container;
                 }}
             />

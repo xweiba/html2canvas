@@ -1,14 +1,14 @@
-import {ElementContainer, FLAGS} from '../dom/element-container';
 import {contains} from '../core/bitwise';
-import {BoundCurves, calculateBorderBoxPath, calculatePaddingBoxPath} from './bound-curves';
-import {ClipEffect, EffectTarget, IElementEffect, isClipEffect, OpacityEffect, TransformEffect} from './effects';
-import {OVERFLOW} from '../css/property-descriptors/overflow';
-import {equalPath} from './path';
 import {DISPLAY} from '../css/property-descriptors/display';
-import {OLElementContainer} from '../dom/elements/ol-element-container';
-import {LIElementContainer} from '../dom/elements/li-element-container';
-import {createCounterText} from '../css/types/functions/counter';
+import {OVERFLOW} from '../css/property-descriptors/overflow';
 import {POSITION} from '../css/property-descriptors/position';
+import {createCounterText} from '../css/types/functions/counter';
+import {ElementContainer, FLAGS} from '../dom/element-container';
+import {LIElementContainer} from '../dom/elements/li-element-container';
+import {OLElementContainer} from '../dom/elements/ol-element-container';
+import {BoundCurves, calculateBorderBoxPath, calculatePaddingBoxPath} from './bound-curves';
+import {ClipEffect, EffectTarget, IElementEffect, OpacityEffect, TransformEffect, isClipEffect} from './effects';
+import {equalPath} from './path';
 
 export class StackingContext {
     element: ElementPaint;
@@ -83,10 +83,8 @@ export class ElementPaint {
                         );
                     }
                 }
-                effects.unshift(...croplessEffects);
-            } else {
-                effects.unshift(...croplessEffects);
             }
+            effects.unshift(...croplessEffects);
 
             parent = parent.parent;
         }

@@ -5,9 +5,7 @@ const fs = require('fs');
 module.exports = {
     siteMetadata: {
         title: `html2canvas`,
-        packageSize: gzipSize.sync(
-            fs.readFileSync(path.resolve(__dirname, '../dist/html2canvas.min.js'))
-        )
+        packageSize: gzipSize.sync(fs.readFileSync(path.resolve(__dirname, '../dist/html2canvas.min.js')))
     },
     plugins: [
         {

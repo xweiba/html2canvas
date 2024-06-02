@@ -11,7 +11,7 @@ sauceConnectLauncher(
         // Enable verbose debugging (optional)
         verboseDebugging: true
     },
-    err => {
+    (err) => {
         if (err) {
             console.error(err.message);
             return;
