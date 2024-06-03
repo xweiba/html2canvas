@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
+## [1.6.1](https://github.com/html2canvas/html2canvas/compare/v1.6.0...v1.6.1) (2024-06-04)
+
+### feat
+
+-   Parse CSS lch support ([6463cd6](https://github.com/html2canvas/html2canvas/commit/6463cd6921f26ffbd4d14f7096311bb139342928)), closes [#3174](https://github.com/niklasvh/html2canvas/issues/3174)
+
+### fix
+
+-   Loading images in Firefox ([184e558](https://github.com/html2canvas/html2canvas/commit/184e5589570a733ea61a06522b9bf5b201a06874))
+
 ## [1.6.0](https://github.com/html2canvas/html2canvas/compare/v1.4.1...v1.6.0) (2024-05-08)
 
 > Change repository to `@html2canvas/html2canvas`
