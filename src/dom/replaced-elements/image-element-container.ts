@@ -22,29 +22,41 @@ export class ImageElementContainer extends ElementContainer {
     private isInlinedSvg = () => ImageElementContainer.INLINED_SVG.test(this.src);
     private isSvg = () => ImageElementContainer.SVG.test(this.src);
 
-    setup(img: HTMLImageElement) {
-        if (this.isSvg()) return;
+    setup(img: HTMLImageElement): Promise<void> {
+        return new Promise<void>((resolve) => {
+            if (this.isSvg()) {
+                resolve();
+            } else if (this.isInlinedSvg()) {
+                const [, inlinedSvg] = this.src.split(',');
+                const svgElement = deserializeSvg(inlinedSvg);
+                const {
+                    width: {baseVal: widthBaseVal},
+                    height: {baseVal: heightBaseVal}
+                } = svgElement;
 
-        if (this.isInlinedSvg()) {
-            const [, inlinedSvg] = this.src.split(',');
-            const svgElement = deserializeSvg(inlinedSvg);
-            const {
-                width: {baseVal: widthBaseVal},
-                height: {baseVal: heightBaseVal}
-            } = svgElement;
+                if (ImageElementContainer.IS_FIRE_FOX) {
+                    widthBaseVal.valueAsString = widthBaseVal.value.toString();
+                    heightBaseVal.valueAsString = heightBaseVal.value.toString();
+                    img.src = serializeSvg(svgElement, 'base64');
+                }
 
-            if (ImageElementContainer.IS_FIRE_FOX) {
-                widthBaseVal.valueAsString = widthBaseVal.value.toString();
-                heightBaseVal.valueAsString = heightBaseVal.value.toString();
-                img.src = serializeSvg(svgElement, 'base64');
+                this.intrinsicWidth = widthBaseVal.value;
+                this.intrinsicHeight = heightBaseVal.value;
+                resolve();
+            } else {
+                this.intrinsicWidth = img.naturalWidth;
+                this.intrinsicHeight = img.naturalHeight;
+
+                if (this.intrinsicWidth && this.intrinsicHeight) {
+                    resolve();
+                } else {
+                    img.addEventListener('load', (_event) => {
+                         this.intrinsicWidth = img.naturalWidth;
+                        this.intrinsicHeight = img.naturalHeight;
+                        resolve();
+                    });
+                }
             }
-
-            this.intrinsicWidth = widthBaseVal.value;
-            this.intrinsicHeight = heightBaseVal.value;
-            return;
-        }
-
-        this.intrinsicWidth = img.naturalWidth;
-        this.intrinsicHeight = img.naturalHeight;
+        });
     }
 }
