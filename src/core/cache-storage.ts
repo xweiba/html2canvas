@@ -1,7 +1,8 @@
 import {FEATURES} from './features';
 import {Context} from './context';
 
-const _cache: {[key: string]: Promise<any>} = {};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const _cache: {[key: string]: Promise<any>} = {};
 
 export class CacheStorage {
     private static _link?: HTMLAnchorElement;
@@ -53,7 +54,7 @@ export class Cache {
     addImage(src: string): boolean {
         if (this.has(src)) return true;
         if (isBlobImage(src) || isRenderable(src)) {
-            _cache[src] = this.loadImage(src).catch(() => {
+            (_cache[src] = this.loadImage(src)).catch(() => {
                 // prevent unhandled rejection
             });
             return true;
@@ -128,7 +129,7 @@ export class Cache {
     }
 
     private has(key: string): boolean {
-        return typeof _cache[key] !== 'undefined';
+        return key in _cache;
     }
 
     keys(): Promise<string[]> {

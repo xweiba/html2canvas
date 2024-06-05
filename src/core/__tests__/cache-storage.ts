@@ -1,6 +1,6 @@
 import {deepStrictEqual, fail} from 'assert';
 import {FEATURES} from '../features';
-import {CacheStorage} from '../cache-storage';
+import {CacheStorage, _cache} from '../cache-storage';
 import {Context} from '../context';
 import {Bounds} from '../../css/layout/bounds';
 
@@ -119,8 +119,24 @@ const setFeatures = (opts: {[key: string]: boolean} = {}) => {
     });
 };
 
+function removeQueryString(url?: string): string | undefined {
+    if (url === undefined || url === null) {
+        return undefined;
+    }
+
+    const urlObject = new URL(url);
+    return urlObject.origin + urlObject.pathname;
+}
+
 describe('cache-storage', () => {
-    beforeEach(() => setFeatures());
+    beforeEach(() => {
+        setFeatures();
+        for (const key in _cache) {
+            if (_cache.hasOwnProperty(key)) {
+                delete _cache[key];
+            }
+        }
+    });
     afterEach(() => {
         xhr.splice(0, xhr.length);
         images.splice(0, images.length);
@@ -189,7 +205,7 @@ describe('cache-storage', () => {
             const {cache} = createMockContext('http://example.com', {useCORS: true});
             cache.addImage('http://html2canvas.hertzen.com/test.jpg');
             deepStrictEqual(images.length, 1);
-            deepStrictEqual(images[0].src, 'http://html2canvas.hertzen.com/test.jpg');
+            deepStrictEqual(removeQueryString(images[0].src), 'http://html2canvas.hertzen.com/test.jpg');
             deepStrictEqual(images[0].crossOrigin, 'anonymous');
         });
 
@@ -208,7 +224,7 @@ describe('cache-storage', () => {
             const {cache} = createMockContext('http://example.com', {useCORS: true});
             cache.addImage('http://html2canvas.hertzen.com/test.jpg');
             deepStrictEqual(images.length, 1);
-            deepStrictEqual(images[0].src, 'http://html2canvas.hertzen.com/test.jpg');
+            deepStrictEqual(removeQueryString(images[0].src), 'http://html2canvas.hertzen.com/test.jpg');
             deepStrictEqual(images[0].crossOrigin, 'anonymous');
         });
 

@@ -502,8 +502,8 @@ export class DocumentCloner {
     }
 
     static destroy(ownerDocument: Document, id: string): boolean {
-        const ownerContainer: HTMLIFrameElement|null = ownerDocument.getElementById(id) as HTMLIFrameElement;
-        const documentContainer: HTMLIFrameElement|null = document.getElementById(id) as HTMLIFrameElement;
+        const ownerContainer: HTMLIFrameElement | null = ownerDocument.getElementById(id) as HTMLIFrameElement;
+        const documentContainer: HTMLIFrameElement | null = document.getElementById(id) as HTMLIFrameElement;
         const container = ownerContainer || documentContainer;
         if (!container) {
             return false;
