@@ -501,7 +501,14 @@ export class DocumentCloner {
         return anonymousReplacedElement;
     }
 
-    static destroy(container: HTMLIFrameElement): boolean {
+    static destroy(ownerDocument: Document, id: string): boolean {
+        const ownerContainer: HTMLIFrameElement|null = ownerDocument.getElementById(id) as HTMLIFrameElement;
+        const documentContainer: HTMLIFrameElement|null = document.getElementById(id) as HTMLIFrameElement;
+        const container = ownerContainer || documentContainer;
+        if (!container) {
+            return false;
+        }
+        // cleanup iframe first to prevent memory leaks
         try {
             // Clear the iframe's content
             container.src = 'about:blank';
@@ -529,9 +536,12 @@ enum PseudoElementType {
     AFTER
 }
 
+let iframeIdCounter = 0;
 const createIFrameContainer = (ownerDocument: Document, bounds: Bounds): HTMLIFrameElement => {
     const cloneIframeContainer = ownerDocument.createElement('iframe');
+    const uniqueId = `html2canvas-iframe-${iframeIdCounter++}`;
 
+    cloneIframeContainer.setAttribute('id', uniqueId);
     cloneIframeContainer.className = 'html2canvas-container';
     cloneIframeContainer.style.visibility = 'hidden';
     cloneIframeContainer.style.position = 'fixed';

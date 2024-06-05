@@ -139,7 +139,7 @@ const renderElement = async (element: HTMLElement, opts: Partial<Options>): Prom
     }
 
     if (opts.removeContainer ?? true) {
-        if (!DocumentCloner.destroy(container)) {
+        if (!DocumentCloner.destroy(ownerDocument, container.id)) {
             context.logger.error(`Cannot detach cloned iframe as it is not in the DOM anymore`);
         }
     }
@@ -162,8 +162,8 @@ const parseBackgroundColor = (context: Context, element: HTMLElement, background
         typeof backgroundColorOverride === 'string'
             ? parseColor(context, backgroundColorOverride)
             : backgroundColorOverride === null
-              ? COLORS.TRANSPARENT
-              : 0xffffffff;
+            ? COLORS.TRANSPARENT
+            : 0xffffffff;
 
     return element === ownerDocument.documentElement
         ? isTransparent(documentBackgroundColor)
