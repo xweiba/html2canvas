@@ -60,7 +60,8 @@ export class Cache {
     }
 
     private async loadImage(key: string) {
-        const isSameOrigin = CacheStorage.isSameOrigin(key);
+        const isExtensionImage = key.startsWith('chrome-extension://');
+        const isSameOrigin = CacheStorage.isSameOrigin(key) || isExtensionImage;
         const useCORS =
             !isInlineImage(key) && this._options.useCORS === true && FEATURES.SUPPORT_CORS_IMAGES && !isSameOrigin;
         const useProxy =
@@ -69,7 +70,8 @@ export class Cache {
             !isBlobImage(key) &&
             typeof this._options.proxy === 'string' &&
             FEATURES.SUPPORT_CORS_XHR &&
-            !useCORS;
+            !useCORS &&
+            !isExtensionImage;
         if (
             !isSameOrigin &&
             this._options.allowTaint === false &&
@@ -93,8 +95,14 @@ export class Cache {
             img.onload = () => resolve(img);
             img.onerror = reject;
             //ios safari 10.3 taints canvas with data urls unless crossOrigin is set to anonymous
-            if (isInlineBase64Image(src) || useCORS) {
+            if (isInlineImage(src) || isInlineBase64Image(src) || useCORS) {
                 img.crossOrigin = 'anonymous';
+            }
+            if (!isInlineImage(src) && useCORS) {
+                // in chrome if the image loaded before without crossorigin it will be cached and used later even if the next usage has crossorigin
+                // it will fail with CORS error, add a random query parameter just to prevent the chrome from using the cached image
+                // see more info about the chrome issue in this link: https://stackoverflow.com/a/49503414
+                src = src + (src.includes('?') ? '&' : '?') + `cors=${Math.random()}`;
             }
             img.src = src;
             if (/^data:/.test(src)) {
@@ -148,7 +156,7 @@ export class Cache {
             };
 
             xhr.onerror = reject;
-            const queryString = proxy.indexOf('?') > -1 ? '&' : '?';
+            const queryString = proxy.includes('?') ? '&' : '?';
             xhr.open('GET', `${proxy}${queryString}url=${encodeURIComponent(src)}&responseType=${responseType}`);
 
             if (responseType !== 'text' && xhr instanceof XMLHttpRequest) {
