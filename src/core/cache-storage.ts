@@ -1,6 +1,8 @@
 import {FEATURES} from './features';
 import {Context} from './context';
 
+const _cache: {[key: string]: Promise<any>} = {};
+
 export class CacheStorage {
     private static _link?: HTMLAnchorElement;
     private static _origin = 'about:blank';
@@ -34,21 +36,26 @@ export interface ResourceOptions {
 }
 
 export class Cache {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private readonly _cache: {[key: string]: Promise<any>} = {};
-
     constructor(
         private readonly context: Context,
         private readonly _options: ResourceOptions
     ) {}
 
+    deleteImage(src: string): boolean {
+        if (this.has(src)) {
+            delete _cache[src];
+            return true;
+        }
+
+        return false;
+    }
+
     addImage(src: string): boolean {
         if (this.has(src)) return true;
         if (isBlobImage(src) || isRenderable(src)) {
-            (this._cache[src] = this.loadImage(src)).catch(() => {
+            _cache[src] = this.loadImage(src).catch(() => {
                 // prevent unhandled rejection
             });
-
             return true;
         }
         return false;
@@ -56,7 +63,7 @@ export class Cache {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     match(src: string): Promise<any> {
-        return this._cache[src];
+        return _cache[src];
     }
 
     private async loadImage(key: string) {
@@ -121,11 +128,11 @@ export class Cache {
     }
 
     private has(key: string): boolean {
-        return typeof this._cache[key] !== 'undefined';
+        return typeof _cache[key] !== 'undefined';
     }
 
     keys(): Promise<string[]> {
-        return Promise.resolve(Object.keys(this._cache));
+        return Promise.resolve(Object.keys(_cache));
     }
 
     private proxy(src: string): Promise<string> {

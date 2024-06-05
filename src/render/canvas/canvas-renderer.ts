@@ -327,7 +327,15 @@ export class CanvasRenderer extends Renderer {
                 await container.setup(image);
                 this.renderReplacedElement(container, curves, image);
             } catch (e) {
-                this.context.logger.error(`Error loading image ${container.src}`);
+                try {
+                    if (this.context.cache.deleteImage(container.src) && e.type && e.type === 'error') {
+                        this.context.cache.addImage(container.src);
+                        const image = await this.context.cache.match(container.src);
+                        this.renderReplacedElement(container, curves, image);
+                    }
+                } catch (e) {
+                    this.context.logger.error(`Error loading image ${container.src}`);
+                }
             }
         }
 
