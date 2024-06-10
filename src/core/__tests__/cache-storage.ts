@@ -1,6 +1,6 @@
 import {deepStrictEqual, fail} from 'assert';
 import {FEATURES} from '../features';
-import {CacheStorage, _cache} from '../cache-storage';
+import {CacheStorage, cache} from '../cache-storage';
 import {Context} from '../context';
 import {Bounds} from '../../css/layout/bounds';
 
@@ -131,9 +131,9 @@ function removeQueryString(url?: string): string | undefined {
 describe('cache-storage', () => {
     beforeEach(() => {
         setFeatures();
-        for (const key in _cache) {
-            if (_cache.hasOwnProperty(key)) {
-                delete _cache[key];
+        for (const key in cache) {
+            if (cache.hasOwnProperty(key)) {
+                delete cache[key];
             }
         }
     });

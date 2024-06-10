@@ -2,7 +2,7 @@ import {FEATURES} from './features';
 import {Context} from './context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const _cache: {[key: string]: Promise<any>} = {};
+export const cache: {[key: string]: Promise<any>} = {};
 
 export class CacheStorage {
     private static _link?: HTMLAnchorElement;
@@ -44,7 +44,7 @@ export class Cache {
 
     deleteImage(src: string): boolean {
         if (this.has(src)) {
-            delete _cache[src];
+            delete cache[src];
             return true;
         }
 
@@ -54,7 +54,7 @@ export class Cache {
     addImage(src: string): boolean {
         if (this.has(src)) return true;
         if (isBlobImage(src) || isRenderable(src)) {
-            (_cache[src] = this.loadImage(src)).catch(() => {
+            (cache[src] = this.loadImage(src)).catch(() => {
                 // prevent unhandled rejection
             });
             return true;
@@ -64,7 +64,7 @@ export class Cache {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     match(src: string): Promise<any> {
-        return _cache[src];
+        return cache[src];
     }
 
     private async loadImage(key: string) {
@@ -129,11 +129,11 @@ export class Cache {
     }
 
     private has(key: string): boolean {
-        return key in _cache;
+        return key in cache;
     }
 
     keys(): Promise<string[]> {
-        return Promise.resolve(Object.keys(_cache));
+        return Promise.resolve(Object.keys(cache));
     }
 
     private proxy(src: string): Promise<string> {
