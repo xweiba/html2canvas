@@ -328,7 +328,7 @@ export class CanvasRenderer extends Renderer {
                 this.renderReplacedElement(container, curves, image);
             } catch (e) {
                 try {
-                    if (this.context.cache.deleteImage(container.src) && e.type && e.type === 'error') {
+                    if (this.context.cache.deleteImage(container.src) && e.type === 'error') {
                         this.context.cache.addImage(container.src);
                         const image = await this.context.cache.match(container.src);
                         this.renderReplacedElement(container, curves, image);
