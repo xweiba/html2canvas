@@ -51,7 +51,7 @@ export class ImageElementContainer extends ElementContainer {
                     resolve();
                 } else {
                     img.addEventListener('load', (_event) => {
-                         this.intrinsicWidth = img.naturalWidth;
+                        this.intrinsicWidth = img.naturalWidth;
                         this.intrinsicHeight = img.naturalHeight;
                         resolve();
                     });

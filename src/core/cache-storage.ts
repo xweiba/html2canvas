@@ -1,6 +1,9 @@
 import {FEATURES} from './features';
 import {Context} from './context';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const cache: {[key: string]: Promise<any>} = {};
+
 export class CacheStorage {
     private static _link?: HTMLAnchorElement;
     private static _origin = 'about:blank';
@@ -34,21 +37,26 @@ export interface ResourceOptions {
 }
 
 export class Cache {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private readonly _cache: {[key: string]: Promise<any>} = {};
-
     constructor(
         private readonly context: Context,
         private readonly _options: ResourceOptions
     ) {}
 
+    deleteImage(src: string): boolean {
+        if (this.has(src)) {
+            delete cache[src];
+            return true;
+        }
+
+        return false;
+    }
+
     addImage(src: string): boolean {
         if (this.has(src)) return true;
         if (isBlobImage(src) || isRenderable(src)) {
-            (this._cache[src] = this.loadImage(src)).catch(() => {
+            (cache[src] = this.loadImage(src)).catch(() => {
                 // prevent unhandled rejection
             });
-
             return true;
         }
         return false;
@@ -56,11 +64,12 @@ export class Cache {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     match(src: string): Promise<any> {
-        return this._cache[src];
+        return cache[src];
     }
 
     private async loadImage(key: string) {
-        const isSameOrigin = CacheStorage.isSameOrigin(key);
+        const isExtensionImage = key.startsWith('chrome-extension://');
+        const isSameOrigin = CacheStorage.isSameOrigin(key) || isExtensionImage;
         const useCORS =
             !isInlineImage(key) && this._options.useCORS === true && FEATURES.SUPPORT_CORS_IMAGES && !isSameOrigin;
         const useProxy =
@@ -69,7 +78,8 @@ export class Cache {
             !isBlobImage(key) &&
             typeof this._options.proxy === 'string' &&
             FEATURES.SUPPORT_CORS_XHR &&
-            !useCORS;
+            !useCORS &&
+            !isExtensionImage;
         if (
             !isSameOrigin &&
             this._options.allowTaint === false &&
@@ -93,8 +103,14 @@ export class Cache {
             img.onload = () => resolve(img);
             img.onerror = reject;
             //ios safari 10.3 taints canvas with data urls unless crossOrigin is set to anonymous
-            if (isInlineBase64Image(src) || useCORS) {
+            if (isInlineImage(src) || isInlineBase64Image(src) || useCORS) {
                 img.crossOrigin = 'anonymous';
+            }
+            if (!isInlineImage(src) && useCORS) {
+                // in chrome if the image loaded before without crossorigin it will be cached and used later even if the next usage has crossorigin
+                // it will fail with CORS error, add a random query parameter just to prevent the chrome from using the cached image
+                // see more info about the chrome issue in this link: https://stackoverflow.com/a/49503414
+                src = src + (src.includes('?') ? '&' : '?') + `cors=${Math.random()}`;
             }
             img.src = src;
             if (/^data:/.test(src)) {
@@ -113,11 +129,11 @@ export class Cache {
     }
 
     private has(key: string): boolean {
-        return typeof this._cache[key] !== 'undefined';
+        return key in cache;
     }
 
     keys(): Promise<string[]> {
-        return Promise.resolve(Object.keys(this._cache));
+        return Promise.resolve(Object.keys(cache));
     }
 
     private proxy(src: string): Promise<string> {
@@ -148,7 +164,7 @@ export class Cache {
             };
 
             xhr.onerror = reject;
-            const queryString = proxy.indexOf('?') > -1 ? '&' : '?';
+            const queryString = proxy.includes('?') ? '&' : '?';
             xhr.open('GET', `${proxy}${queryString}url=${encodeURIComponent(src)}&responseType=${responseType}`);
 
             if (responseType !== 'text' && xhr instanceof XMLHttpRequest) {

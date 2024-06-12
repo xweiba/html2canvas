@@ -19,6 +19,27 @@ const parseNodeTree = (context: Context, node: Node, parent: ElementContainer, r
         nextNode = childNode.nextSibling;
 
         if (isTextNode(childNode) && childNode.data.trim().length > 0) {
+            // The U tag marks text with a special underline treatment, and it's not possible to get the underline style from the browser's computed style.
+            const parentStep = 3;
+            let hasUnderline
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let pNode: any = childNode;
+            for (let i = 0; i < parentStep; i++) {
+                if (!pNode) {
+                    break;
+                }
+                if (pNode.parentElement?.tagName === 'U') {
+                    hasUnderline = true;
+                    break;
+                }
+                pNode = pNode.parentElement;
+            }
+            const line = parent.styles.textDecorationLine;
+            if (hasUnderline && line) {
+                for (let j = 0; j < line.length; j++) {
+                    line[j] = 1;
+                }
+            }
             parent.textNodes.push(new TextContainer(context, childNode, parent.styles));
         } else if (isElementNode(childNode)) {
             if (isSlotElement(childNode) && childNode.assignedNodes) {

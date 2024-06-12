@@ -139,7 +139,7 @@ const renderElement = async (element: HTMLElement, opts: Partial<Options>): Prom
     }
 
     if (opts.removeContainer ?? true) {
-        if (!DocumentCloner.destroy(container)) {
+        if (!DocumentCloner.destroy(ownerDocument, container.id)) {
             context.logger.error(`Cannot detach cloned iframe as it is not in the DOM anymore`);
         }
     }
