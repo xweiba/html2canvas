@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.2](https://github.com/html2canvas/html2canvas/compare/v1.6.1...v1.6.2) (2024-06-14)
+
+### fix
+
+-   Fix underline ([b2911f3](https://github.com/html2canvas/html2canvas/commit/b2911f3f6cf4d0991716a07ff61d6d7fbfdf80df))
+-   Fix renderBackgroundImage When receiving an image with 0 width or height ([c7eb296](https://github.com/html2canvas/html2canvas/commit/c7eb296dbee488af46c63540de79fe44026ca85b))
+-   Fix font loading ([50a8365](https://github.com/html2canvas/html2canvas/commit/50a8365470dd7f2fc07acf7e959c8de3709d1fd3))
+-   When running async with many invocations cleanup all iframes ([724fe62](https://github.com/html2canvas/html2canvas/commit/724fe62e7e59c30e9bd212911b5408434781062c))
+-   Fix cors and browser extension image handling ([714c08f](https://github.com/html2canvas/html2canvas/commit/714c08fa9a406555da26c5b93008ae039527a13a))
+-   Use global cache and retry image after deleting from cache ([e359d90](https://github.com/html2canvas/html2canvas/commit/e359d90def9b2354508e240cb9c57ea26efab4b5))
 
 ## [1.6.1](https://github.com/html2canvas/html2canvas/compare/v1.6.0...v1.6.1) (2024-06-04)
 
