@@ -1,16 +1,16 @@
+import {Context} from '../core/context';
 import {CSSParsedDeclaration} from '../css';
 import {ElementContainer, FLAGS} from './element-container';
-import {TextContainer} from './text-container';
-import {ImageElementContainer} from './replaced-elements/image-element-container';
-import {CanvasElementContainer} from './replaced-elements/canvas-element-container';
-import {SVGElementContainer} from './replaced-elements/svg-element-container';
 import {LIElementContainer} from './elements/li-element-container';
 import {OLElementContainer} from './elements/ol-element-container';
-import {InputElementContainer} from './replaced-elements/input-element-container';
 import {SelectElementContainer} from './elements/select-element-container';
 import {TextareaElementContainer} from './elements/textarea-element-container';
+import {CanvasElementContainer} from './replaced-elements/canvas-element-container';
 import {IFrameElementContainer} from './replaced-elements/iframe-element-container';
-import {Context} from '../core/context';
+import {ImageElementContainer} from './replaced-elements/image-element-container';
+import {InputElementContainer} from './replaced-elements/input-element-container';
+import {SVGElementContainer} from './replaced-elements/svg-element-container';
+import {TextContainer} from './text-container';
 
 const LIST_OWNERS = ['OL', 'UL', 'MENU'];
 
@@ -21,7 +21,7 @@ const parseNodeTree = (context: Context, node: Node, parent: ElementContainer, r
         if (isTextNode(childNode) && childNode.data.trim().length > 0) {
             // The U tag marks text with a special underline treatment, and it's not possible to get the underline style from the browser's computed style.
             const parentStep = 3;
-            let hasUnderline
+            let hasUnderline;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let pNode: any = childNode;
             for (let i = 0; i < parentStep; i++) {
