@@ -146,7 +146,16 @@ export class CanvasRenderer extends Renderer {
 
     renderTextWithLetterSpacing(text: TextBounds, letterSpacing: number, baseline: number): void {
         if (letterSpacing === 0) {
-            this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + baseline);
+            // 修复 Chrome 中，数字字符上移的问题。
+            // https://github.com/niklasvh/html2canvas/issues/2107#issuecomment-692462900
+            if (navigator.userAgent.indexOf('Firefox') === -1){
+                // non-Firefox browser add this
+                this.ctx.textBaseline = 'ideographic';
+                this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + text.bounds.height);
+                // this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + baseline);
+            } else {
+                this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + baseline);
+            }
         } else {
             const letters = segmentGraphemes(text.text);
             letters.reduce((left, letter) => {
@@ -214,35 +223,17 @@ export class CanvasRenderer extends Renderer {
                         if (styles.textDecorationLine.length) {
                             this.ctx.fillStyle = asString(styles.textDecorationColor || styles.color);
                             styles.textDecorationLine.forEach((textDecorationLine) => {
+                                var fillHeight = 1;
+                                // High-resolution x-axis positioning errors due to scaling can be corrected by using the relative height values of elements. On high-resolution displays, scaling can introduce inaccuracies in x-axis positioning. By referencing the relative height values of elements, these errors can be rectified, achieving more precise display accuracy.
                                 switch (textDecorationLine) {
                                     case TEXT_DECORATION_LINE.UNDERLINE:
-                                        // Draws a line at the baseline of the font
-                                        // TODO As some browsers display the line as more than 1px if the font-size is big,
-                                        // need to take that into account both in position and size
-                                        this.ctx.fillRect(
-                                            text.bounds.left,
-                                            Math.round(text.bounds.top + baseline),
-                                            text.bounds.width,
-                                            1
-                                        );
-
+                                        this.ctx.fillRect(text.bounds.left, text.bounds.top + text.bounds.height - fillHeight, text.bounds.width, fillHeight);
                                         break;
                                     case TEXT_DECORATION_LINE.OVERLINE:
-                                        this.ctx.fillRect(
-                                            text.bounds.left,
-                                            Math.round(text.bounds.top),
-                                            text.bounds.width,
-                                            1
-                                        );
+                                        this.ctx.fillRect(text.bounds.left, text.bounds.top , text.bounds.width, fillHeight);
                                         break;
                                     case TEXT_DECORATION_LINE.LINE_THROUGH:
-                                        // TODO try and find exact position for line-through
-                                        this.ctx.fillRect(
-                                            text.bounds.left,
-                                            Math.ceil(text.bounds.top + middle),
-                                            text.bounds.width,
-                                            1
-                                        );
+                                        this.ctx.fillRect(text.bounds.left, text.bounds.top + (text.bounds.height / 2 - fillHeight / 2), text.bounds.width, fillHeight);
                                         break;
                                 }
                             });
