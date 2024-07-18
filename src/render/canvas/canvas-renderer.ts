@@ -149,10 +149,8 @@ export class CanvasRenderer extends Renderer {
             // Fixed an issue with characters moving up in non-Firefox.
             // https://github.com/niklasvh/html2canvas/issues/2107#issuecomment-692462900
             if (navigator.userAgent.indexOf('Firefox') === -1){
-                // non-Firefox browser add this
                 this.ctx.textBaseline = 'ideographic';
                 this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + text.bounds.height);
-                // this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + baseline);
             } else {
                 this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + baseline);
             }
